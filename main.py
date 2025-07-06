@@ -2,6 +2,12 @@ import os
 import telebot
 from web import keep_alive
 
+# Importer les blocs de commandes
+from commands.quiz import register_quiz
+from commands.correction import register_correction
+from commands.filmdujour import register_filmdujour
+from commands.suggestion import register_suggestion
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -14,13 +20,17 @@ def send_help(message):
     help_text = (
         "📖 *COMMANDES DISPONIBLES*\n\n"
         "/start - Message d’accueil\n"
-        "/help - Affiche ce guide\n"
+        "/help - Ce guide\n"
         "/vision - Découvre la mission de Gedaj\n"
-        "Écris simplement 'gedaj' et je te réponds selon qui tu es 😉"
+        "/quiz - Lance le quiz du jour\n"
+        "/correction - Donne la réponse du quiz précédent\n"
+        "/filmdujour - Recommande un film\n"
+        "/suggestion - Propose un contenu à publier\n"
+        "Tape 'gedaj' et je te réponds selon qui tu es 👀"
     )
     bot.send_message(message.chat.id, help_text, parse_mode="Markdown")
 
-@bot.message_handler(commands=['vision'])
+@bot.message_handler(commands=["vision"])
 def handle_vision(message):
     bot.reply_to(message, "👁️ Ma vision est de rendre le cinéma et l’animation accessibles, fun et communautaires, tous les jours avec Geekmania !")
 
@@ -33,6 +43,12 @@ def detect_gedaj(message):
         bot.reply_to(message, "Oui tonton 😄")
     else:
         bot.reply_to(message, "Présent chef ✋")
+
+# Enregistrement des blocs
+register_quiz(bot)
+register_correction(bot)
+register_filmdujour(bot)
+register_suggestion(bot)
 
 keep_alive()
 print("Gedaj lancé avec succès !")
