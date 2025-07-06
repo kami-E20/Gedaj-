@@ -15,12 +15,15 @@ from commands.abodumois import register_abodumois
 from commands.suggestion import register_suggestion
 from commands.defi import register_defi
 from commands.avis import register_avis
+from commands.spoiler import register_spoiler
+from commands.inviter import register_inviter
+from commands.translate import register_translate
 
 # Charger le token depuis les variables d'environnement
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 bot = telebot.TeleBot(BOT_TOKEN)
 
-# Enregistrer les commandes utilisateur
+# Enregistrer toutes les commandes
 register_start(bot)
 register_help(bot)
 register_quiz(bot)
@@ -31,8 +34,11 @@ register_abodumois(bot)
 register_suggestion(bot)
 register_defi(bot)
 register_avis(bot)
+register_spoiler(bot)
+register_inviter(bot)
+register_translate(bot)
 
-# Lancer la planification en arrière-plan
+# Lancer le scheduler dans un thread
 threading.Thread(target=run_scheduler, daemon=True).start()
 
 # Lancer le bot
