@@ -1,5 +1,5 @@
 from telebot.types import Message
-from main import bot
+from loader import bot
 
 def register_inviter():
     @bot.message_handler(commands=['inviter'])
