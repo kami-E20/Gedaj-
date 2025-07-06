@@ -1,45 +1,41 @@
-import os
 import telebot
-import threading
-from dotenv import load_dotenv
+import os
 from web import keep_alive
 
-load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 bot = telebot.TeleBot(BOT_TOKEN)
 
 @bot.message_handler(commands=['start'])
-def start(message):
-    bot.reply_to(message, "🎬 Bienvenue dans l’univers de GEDAJ 🤖\n\nIci, tu recevras chaque jour :\n— des films ou animés cultes 📺\n— des quiz cinéma pour t’amuser 🎯\n— des actus geek secrètes 🔒\n— des classements & cadeaux 🎁\n\n🤝 Tu fais maintenant partie de la communauté Geekmania.\n👉 Rejoins le canal ici : @GEEKMANIA")
+def send_welcome(message):
+    bot.reply_to(message, "Bienvenue sur Gedaj 🤖 ! Utilise /help pour voir ce que je peux faire.")
 
 @bot.message_handler(commands=['help'])
-def help_cmd(message):
-    bot.reply_to(message, '''📖 GUIDE D’UTILISATION – GEDAJ
+def send_help(message):
+    help_text = (
+        "🤖 *Commandes disponibles :*
 
-Voici ce que tu peux faire avec Gedaj 🤖 :
+"
+        "/start - Message d’accueil chaleureux
+"
+        "/help - Affiche ce message d’aide
+"
+        "Répond aussi au mot 'gedaj' automatiquement selon l’utilisateur.
 
-🎬 /filmdujour – Découvre le film ou l’animation du jour
-❓ /quiz – Participe au quiz ciné du jour
-✅ /correction – Obtiens les réponses du dernier quiz
-🎯 /defi – Relève un défi bonus pour gagner des points
-🌍 /translate – Traduis un message en anglais ou français
-🧠 /suggestion – Propose un film, anime ou idée à Geekmania
-🎭 /spoiler – Cacher ou révéler un spoiler dans le canal
-📊 /classement – Voir le top des abonnés actifs
-🎁 /recompenses – Vois les cadeaux offerts aux meilleurs abonnés
-👑 /abodumois – Infos sur les abonnés du mois
-🧢 /fanpass – Rôles spéciaux de la communauté
-💌 /inviter – Partage un lien personnalisé pour inviter tes amis
-🕒 /prochainfilm – Heure de la prochaine publication
-🌐 /lang – Choisir ta langue (FR / EN)
-📎 /source – Voir la source du film ou actu
-💬 /avis – Envoyer ton avis sur le contenu du jour
-👨‍💼 /admin – Liste des admins du canal
-📜 /vision – Vision et mission de Gedaj
+"
+        "Et bien plus à venir sur Geekmania 🎬 !"
+    )
+    bot.send_message(message.chat.id, help_text, parse_mode="Markdown")
 
-💡 Tape simplement une commande pour l’utiliser 👇''')
+@bot.message_handler(func=lambda message: 'gedaj' in message.text.lower())
+def detect_gedaj(message):
+    user_id = message.from_user.id
+    if user_id == 879386491:  # Kami
+        bot.reply_to(message, "Oui papa 😎")
+    elif user_id == 5618445554:  # Anthony
+        bot.reply_to(message, "Oui tonton 😄")
+    else:
+        bot.reply_to(message, "Présent chef ✋")
 
-if __name__ == "__main__":
-    print("Gedaj v1.5 lancé avec succès !")
-    threading.Thread(target=keep_alive).start()
-    bot.infinity_polling()
+keep_alive()
+print("Gedaj lancé avec succès !")
+bot.infinity_polling()
