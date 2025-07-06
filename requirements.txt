@@ -1,5 +1,5 @@
-pyTelegramBotAPI==4.12.0
 flask
-schedule
-python-dotenv
+pyTelegramBotAPI
 feedparser
+requests
+googletrans==4.0.0rc1
