@@ -1,15 +1,13 @@
-def register_inviter(bot):
-    @bot.message_handler(commands=['inviter'])
-    def handle_inviter(message):
-        user_id = message.from_user.id
-        invite_link = f"https://t.me/GEEKMANIA?start={user_id}"
-        msg = (
-            "📨 Invite tes amis à rejoindre Geekmania !
 
-"
-            f"🔗 Ton lien personnel : {invite_link}
+from telebot.types import Message
+from loader import bot
 
-"
-            "🎁 Des récompenses sont prévues pour les meilleurs parrains !"
+def register_inviter(dp):
+    @bot.message_handler(commands=["inviter"])
+    def send_invite(message: Message):
+        response = (
+            "📩 Invite tes amis à rejoindre Geekmania !\n"
+            "Voici ton lien d’invitation personnalisé :\n"
+            f"https://t.me/GEEKMANIA?start={message.from_user.id}"
         )
-        bot.reply_to(message, msg)
+        bot.reply_to(message, response)
