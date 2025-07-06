@@ -2,5 +2,6 @@ flask
 pyTelegramBotAPI
 feedparser
 requests
-googletrans==4.0.0rc1
 schedule
+deep-translator
+httpx
