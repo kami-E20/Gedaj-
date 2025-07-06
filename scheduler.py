@@ -7,6 +7,11 @@ from scripts.fetch_anime_rss import fetch_anime_rss
 from scripts.admin_notify import send_admin_news
 from scripts.backup import backup_donnees
 from scripts.points import publier_meilleurs_abonnes, publier_abonnes_du_mois
+from scripts.anniversaires import fetch_anniversaires
+from scripts.notify_blocks import send_admin_anniv
+from scripts.sorties_anilist import fetch_anime_sorties
+from scripts.sorties_cinema_rss import fetch_cinema_sorties
+from scripts.notify_sorties import notify_sorties
 
 def envoyer_actus_du_jour():
     from main import bot
@@ -20,12 +25,29 @@ def envoyer_actus_du_jour():
     if rss:
         send_admin_news(bot, rss, categorie="Anime (RSS)")
 
+def envoyer_anniversaires():
+    from main import bot
+    anniv = fetch_anniversaires()
+    if anniv:
+        send_admin_anniv(bot, anniv)
+
+def notifier_sorties():
+    from main import bot
+    anime = fetch_anime_sorties()
+    cinema = fetch_cinema_sorties()
+    if anime:
+        notify_sorties(bot, anime, categorie="Anime / Manga")
+    if cinema:
+        notify_sorties(bot, cinema, categorie="Cinéma")
+
 def verifier_debut_mois():
     if datetime.now().day == 1:
         publier_abonnes_du_mois()
 
 def run_scheduler():
+    schedule.every().day.at("08:55").do(notifier_sorties)
     schedule.every().day.at("09:00").do(envoyer_actus_du_jour)
+    schedule.every().day.at("09:10").do(envoyer_anniversaires)
     schedule.every().day.at("23:59").do(backup_donnees)
     schedule.every().sunday.at("20:00").do(publier_meilleurs_abonnes)
     schedule.every().day.at("00:01").do(verifier_debut_mois)
