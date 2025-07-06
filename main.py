@@ -3,6 +3,7 @@ import os
 from telebot import types
 from scheduler import run_scheduler
 import threading
+from flask import Flask
 
 # Import des modules de commandes
 from commands.start import register_start
@@ -41,5 +42,18 @@ register_translate(bot)
 # Lancer le scheduler dans un thread
 threading.Thread(target=run_scheduler, daemon=True).start()
 
-# Lancer le bot
+# Créer un faux serveur Flask pour Render
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Gedaj bot is alive!"
+
+def run_flask():
+    app.run(host="0.0.0.0", port=10000)
+
+# Lancer Flask dans un thread à part
+threading.Thread(target=run_flask, daemon=True).start()
+
+# Lancer le bot Telegram
 bot.infinity_polling()
