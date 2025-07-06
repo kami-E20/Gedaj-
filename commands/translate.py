@@ -1,22 +1,23 @@
-from loader import bot
+from deep_translator import GoogleTranslator
 from telebot.types import Message
-from googletrans import Translator
-from utils.permissions import is_user_authorized
+from loader import bot
 
-translator = Translator()
+def register_translate(dp):
+    @dp.message_handler(commands=['translate'])
+    def handle_translate(message: Message):
+        args = message.text.split(maxsplit=2)
+        if len(args) < 3:
+            bot.reply_to(message, "❗ Utilisation : `/translate <fr/en> <texte>`", parse_mode="Markdown")
+            return
 
-@bot.message_handler(commands=['translate'])
-def register_translate(message: Message):
-    if not is_user_authorized(message.from_user.id):
-        return
+        lang = args[1].lower()
+        if lang not in ['fr', 'en']:
+            bot.reply_to(message, "❗ Langue non prise en charge. Utilise `fr` ou `en`.", parse_mode="Markdown")
+            return
 
-    try:
-        text = message.text.split(maxsplit=1)[1]
-    except IndexError:
-        bot.reply_to(message, "❗ Veuillez fournir un texte à traduire après la commande.")
-        return
-
-    lang = 'en' if message.from_user.language_code == 'fr' else 'fr'
-    translated = translator.translate(text, dest=lang).text
-    chat_id = message.chat.id
-    bot.send_message(chat_id, f"📘 Traduction ({lang}) :\n\n{translated}")
+        texte = args[2]
+        try:
+            translated = GoogleTranslator(source='auto', target=lang).translate(texte)
+            bot.send_message(message.chat.id, f"🌐 Traduction ({lang}) :\n{translated}")
+        except Exception as e:
+            bot.send_message(message.chat.id, f"❌ Erreur pendant la traduction : {e}")
