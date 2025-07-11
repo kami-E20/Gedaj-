@@ -1,57 +1,42 @@
+
 import schedule
 import time
-from datetime import datetime
-from scripts.fetch_anilist_news import fetch_anilist_news
-from scripts.fetch_cinema_news import fetch_cinema_news
-from scripts.fetch_anime_rss import fetch_anime_rss
-from scripts.admin_notify import send_admin_news
-from scripts.backup import backup_donnees
-from scripts.points import publier_meilleurs_abonnes, publier_abonnes_du_mois
-from scripts.anniversaires import fetch_anniversaires
-from scripts.notify_blocks import send_admin_anniv
-from scripts.sorties_anilist import fetch_anime_sorties
-from scripts.sorties_cinema_rss import fetch_cinema_sorties
-from scripts.notify_sorties import notify_sorties
+import threading
+import subprocess
 
-def envoyer_actus_du_jour():
-    from main import bot
-    anime = fetch_anilist_news()
-    cinema = fetch_cinema_news()
-    rss = fetch_anime_rss()
-    if anime:
-        send_admin_news(bot, anime, categorie="Anime (AniList)")
-    if cinema:
-        send_admin_news(bot, cinema, categorie="Cinéma")
-    if rss:
-        send_admin_news(bot, rss, categorie="Anime (RSS)")
+def run_script(path):
+    try:
+        subprocess.run(["python", path], check=True)
+    except Exception as e:
+        print(f"Erreur lors de l'exécution de {path} :", e)
 
-def envoyer_anniversaires():
-    from main import bot
-    anniv = fetch_anniversaires()
-    if anniv:
-        send_admin_anniv(bot, anniv)
+def schedule_tasks():
+    # ⏰ 09h00 - Actualités privées aux admins (anilist + RSS)
+    schedule.every().day.at("09:00").do(run_script, path="scripts/notify_blocks.py")
 
-def notifier_sorties():
-    from main import bot
-    anime = fetch_anime_sorties()
-    cinema = fetch_cinema_sorties()
-    if anime:
-        notify_sorties(bot, anime, categorie="Anime / Manga")
-    if cinema:
-        notify_sorties(bot, cinema, categorie="Cinéma")
+    # ⏰ 12h00 - Film du jour
+    schedule.every().day.at("12:00").do(run_script, path="scripts/publish.py")
 
-def verifier_debut_mois():
-    if datetime.now().day == 1:
-        publier_abonnes_du_mois()
+    # ⏰ 15h00 - Quiz du jour
+    schedule.every().day.at("15:00").do(run_script, path="scripts/generate_quiz_message.py")
+
+    # ⏰ 23h00 - Correction du quiz
+    schedule.every().day.at("23:00").do(run_script, path="scripts/correction.py")
+
+    # ⏰ 23h59 - Sauvegarde des données
+    schedule.every().day.at("23:59").do(run_script, path="scripts/backup.py")
+
+    # ⏰ Dimanche 18h - Statistiques hebdo
+    schedule.every().sunday.at("18:00").do(run_script, path="scripts/stats.py")
+
+    # ⏰ Dimanche 20h - Top abonnés de la semaine
+    schedule.every().sunday.at("20:00").do(run_script, path="scripts/top_weekly.py")
 
 def run_scheduler():
-    schedule.every().day.at("08:55").do(notifier_sorties)
-    schedule.every().day.at("09:00").do(envoyer_actus_du_jour)
-    schedule.every().day.at("09:10").do(envoyer_anniversaires)
-    schedule.every().day.at("23:59").do(backup_donnees)
-    schedule.every().sunday.at("20:00").do(publier_meilleurs_abonnes)
-    schedule.every().day.at("00:01").do(verifier_debut_mois)
-
+    schedule_tasks()
     while True:
         schedule.run_pending()
         time.sleep(1)
+
+def start():
+    threading.Thread(target=run_scheduler).start()
