@@ -1,4 +1,2 @@
 def register_help(bot):
-    @bot.message_handler(commands=['help'])
-    def handle(message):
-        bot.reply_to(message, 'Voici les commandes disponibles...')
+    bot.add_command('help', lambda msg: bot.send_message(msg.chat.id, 'Commande /help exécutée avec succès.'))

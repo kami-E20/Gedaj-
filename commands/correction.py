@@ -1,4 +1,2 @@
 def register_correction(bot):
-    @bot.message_handler(commands=['correction'])
-    def handle(message):
-        bot.reply_to(message, 'La réponse du quiz précédent était : A')
+    bot.add_command('correction', lambda msg: bot.send_message(msg.chat.id, 'Commande /correction exécutée avec succès.'))

@@ -1,4 +1,2 @@
 def register_prochainfilm(bot):
-    @bot.message_handler(commands=['prochainfilm'])
-    def handle(message):
-        bot.reply_to(message, 'Prochaine diffusion à 15h 📅')
+    bot.add_command('prochainfilm', lambda msg: bot.send_message(msg.chat.id, 'Commande /prochainfilm exécutée avec succès.'))

@@ -1,4 +1,2 @@
 def register_lang(bot):
-    @bot.message_handler(commands=['lang'])
-    def handle(message):
-        bot.reply_to(message, 'Langue définie sur Français 🇫🇷')
+    bot.add_command('lang', lambda msg: bot.send_message(msg.chat.id, 'Commande /lang exécutée avec succès.'))
