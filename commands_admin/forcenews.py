@@ -1,7 +1,2 @@
-from telebot import TeleBot
-
-def register_forcenews(bot: TeleBot, admin_ids):
-    @bot.message_handler(commands=["forcenews"])
-    def handle_forcenews(message):
-        if message.from_user.id in admin_ids:
-            bot.reply_to(message, "🗞️ Actu du jour publiée de force !")
+def register_forcenews(bot):
+    bot.add_command('forcenews', lambda msg: bot.send_message(msg.chat.id, 'Commande /forcenews réservée aux admins exécutée.'))
