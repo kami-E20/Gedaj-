@@ -8,36 +8,36 @@ if not TOKEN or ':' not in TOKEN:
 
 bot = TeleBot(TOKEN)
 
-# Importation des handlers enrichis
-from start import start
-from help import help
-from quiz import quiz
-from correction import correction
-from filmdujour import filmdujour
-from suggestion import suggestion
-from spoiler import spoiler
-from avis import avis
-from fanpass import fanpass
-from classement import classement
-from admin import admin
-from translate import translate
-from lang import lang
-from abodumois import abodumois
-from inviter import inviter
-from prochainfilm import prochainfilm
-from vision import vision
-from defi import defi
-from source import source
-from recompenses import recompenses
-from call import call
-from test import test
-from forcefilm import forcefilm
-from forcequiz import forcequiz
-from forcenews import forcenews
-from restorebackup import restorebackup
-from senddebug import senddebug
-from adminpanel import adminpanel
-from lockdown import lockdown
+# Importation des fichiers de commandes
+import start
+import help
+import quiz
+import correction
+import filmdujour
+import suggestion
+import spoiler
+import avis
+import fanpass
+import classement
+import admin
+import translate
+import lang
+import abodumois
+import inviter
+import prochainfilm
+import vision
+import defi
+import source
+import recompenses
+import call
+import test
+import forcefilm
+import forcequiz
+import forcenews
+import restorebackup
+import senddebug
+import adminpanel
+import lockdown
 
 
 if __name__ == '__main__':
