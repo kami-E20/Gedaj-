@@ -1,59 +1,41 @@
-import telebot
-import os
-from telebot import types
-from scheduler import run_scheduler
-import threading
-from flask import Flask
+from telebot import TeleBot
+import logging
 
-# Import des modules de commandes
-from commands.start import register_start
-from commands.help import register_help
-from commands.quiz import register_quiz
-from commands.listener import register_listener
-from commands.classement import register_classement
-from commands.recompenses import register_recompenses
-from commands.abodumois import register_abodumois
-from commands.suggestion import register_suggestion
-from commands.defi import register_defi
-from commands.avis import register_avis
-from commands.spoiler import register_spoiler
-from commands.inviter import register_inviter
-from commands.translate import register_translate
+TOKEN = 'TON_TOKEN_ICI'
+bot = TeleBot(TOKEN)
 
-# Charger le token depuis les variables d'environnement
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-bot = telebot.TeleBot(BOT_TOKEN)
+# Handlers enregistrés
+from start import start
+from help import help
+from quiz import quiz
+from correction import correction
+from filmdujour import filmdujour
+from suggestion import suggestion
+from spoiler import spoiler
+from avis import avis
+from fanpass import fanpass
+from classement import classement
+from admin import admin
+from translate import translate
+from lang import lang
+from abodumois import abodumois
+from inviter import inviter
+from prochainfilm import prochainfilm
+from vision import vision
+from defi import defi
+from source import source
+from recompenses import recompenses
+from call import call
+from test import test
+from forcefilm import forcefilm
+from forcequiz import forcequiz
+from forcenews import forcenews
+from restorebackup import restorebackup
+from senddebug import senddebug
+from adminpanel import adminpanel
+from lockdown import lockdown
 
-# Enregistrer toutes les commandes
-register_start(bot)
-register_help(bot)
-register_quiz(bot)
-register_listener(bot)
-register_classement(bot)
-register_recompenses(bot)
-register_abodumois(bot)
-register_suggestion(bot)
-register_defi(bot)
-register_avis(bot)
-register_spoiler(bot)
-register_inviter(bot)
-register_translate(bot)
 
-# Lancer le scheduler dans un thread
-threading.Thread(target=run_scheduler, daemon=True).start()
-
-# Créer un faux serveur Flask pour Render
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "Gedaj bot is alive!"
-
-def run_flask():
-    app.run(host="0.0.0.0", port=10000)
-
-# Lancer Flask dans un thread à part
-threading.Thread(target=run_flask, daemon=True).start()
-
-# Lancer le bot Telegram
-bot.infinity_polling()
+if __name__ == '__main__':
+    print('Bot démarré avec tous les handlers...')
+    bot.infinity_polling()
