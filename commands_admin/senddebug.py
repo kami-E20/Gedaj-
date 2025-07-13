@@ -1,2 +1,7 @@
-def register_senddebug(bot):
-    bot.add_command('senddebug', lambda msg: bot.send_message(msg.chat.id, "📤 Logs et status du bot envoyés à l’admin principal."))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['senddebug'])
+def senddebug(message):
+    bot.send_message(message.chat.id, 'Logs envoyés.')

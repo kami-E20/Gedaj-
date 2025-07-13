@@ -1,2 +1,7 @@
-def register_lockdown(bot):
-    bot.add_command('lockdown', lambda msg: bot.send_message(msg.chat.id, "🔒 *Mode Lockdown activé* : toutes les commandes publiques sont temporairement désactivées."))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['lockdown'])
+def lockdown(message):
+    bot.send_message(message.chat.id, 'Mode confinement activé 🔒')

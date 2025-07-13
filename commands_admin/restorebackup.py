@@ -1,2 +1,7 @@
-def register_restorebackup(bot):
-    bot.add_command('restorebackup', lambda msg: bot.send_message(msg.chat.id, "♻️ *Backup restauré* à partir des dernières données sauvegardées."))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['restorebackup'])
+def restorebackup(message):
+    bot.send_message(message.chat.id, 'Restauration en cours...')

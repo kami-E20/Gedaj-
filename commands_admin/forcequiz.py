@@ -1,2 +1,7 @@
-def register_forcequiz(bot):
-    bot.add_command('forcequiz', lambda msg: bot.send_message(msg.chat.id, "❓ *Quiz du jour* publié immédiatement."))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['forcequiz'])
+def forcequiz(message):
+    bot.send_message(message.chat.id, 'Forçage du quiz du jour...')

@@ -1,2 +1,7 @@
-def register_admin(bot):
-    bot.add_command('admin', lambda msg: bot.send_message(msg.chat.id, "👨‍💼 Admins officiels de @GEEKMANIA :\n• Kâmį\n• Anthony\nPour contacter l’équipe, utilise /suggestion."))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['admin'])
+def admin(message):
+    bot.send_message(message.chat.id, 'Panneau admin')

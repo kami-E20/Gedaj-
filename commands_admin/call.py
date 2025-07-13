@@ -1,2 +1,7 @@
-def register_call(bot):
-    bot.add_command('call', lambda msg: bot.send_message(msg.chat.id, "🔔 Gedaj est *en ligne*. Prêt à servir, patron !"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['call'])
+def call(message):
+    bot.send_message(message.chat.id, 'Appel en attente...')

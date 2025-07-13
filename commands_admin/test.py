@@ -1,2 +1,7 @@
-def register_test(bot):
-    bot.add_command('test', lambda msg: bot.send_message(msg.chat.id, "🧪 Test complet lancé :\n• Envoi film : OK\n• Envoi quiz : OK\n• Privé admin : OK\n• Backup : OK"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['test'])
+def test(message):
+    bot.send_message(message.chat.id, 'Test en cours...')
