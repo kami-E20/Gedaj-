@@ -1,10 +1,14 @@
+import os
 from telebot import TeleBot
 import logging
 
-TOKEN = 'TON_TOKEN_ICI'
+TOKEN = os.getenv("BOT_TOKEN")
+if not TOKEN or ':' not in TOKEN:
+    raise ValueError("Le token Telegram est invalide ou manquant. Vérifie la variable d'environnement BOT_TOKEN.")
+
 bot = TeleBot(TOKEN)
 
-# Handlers enregistrés
+# Importation des handlers enrichis
 from start import start
 from help import help
 from quiz import quiz
@@ -37,5 +41,5 @@ from lockdown import lockdown
 
 
 if __name__ == '__main__':
-    print('Bot démarré avec tous les handlers...')
+    print('✅ Bot démarré avec succès...')
     bot.infinity_polling()
