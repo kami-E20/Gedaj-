@@ -8,36 +8,38 @@ if not TOKEN or ':' not in TOKEN:
 
 bot = TeleBot(TOKEN)
 
-# Importation des fichiers de commandes
-import start
-import help
-import quiz
-import correction
-import filmdujour
-import suggestion
-import spoiler
-import avis
-import fanpass
-import classement
-import admin
-import translate
-import lang
-import abodumois
-import inviter
-import prochainfilm
-import vision
-import defi
-import source
-import recompenses
-import call
-import test
-import forcefilm
-import forcequiz
-import forcenews
-import restorebackup
-import senddebug
-import adminpanel
-import lockdown
+# Import des commandes utilisateur
+from commands import start
+from commands import help
+from commands import quiz
+from commands import correction
+from commands import filmdujour
+from commands import suggestion
+from commands import spoiler
+from commands import avis
+from commands import fanpass
+from commands import classement
+from commands import translate
+from commands import lang
+from commands import abodumois
+from commands import inviter
+from commands import prochainfilm
+from commands import vision
+from commands import defi
+from commands import source
+from commands import recompenses
+from commands import call
+from commands import test
+from commands import forcefilm
+from commands import forcequiz
+from commands import forcenews
+from commands import restorebackup
+from commands import senddebug
+
+# Import des commandes admin
+from commands_admin import admin
+from commands_admin import adminpanel
+from commands_admin import lockdown
 
 
 if __name__ == '__main__':
