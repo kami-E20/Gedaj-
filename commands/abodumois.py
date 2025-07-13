@@ -1,2 +1,7 @@
-def register_abodumois(bot):
-    bot.add_command('abodumois', lambda msg: bot.send_message(msg.chat.id, "👑 Chaque mois, les 5 abonnés les plus actifs reçoivent une récompense Geekmania !\nParticipe pour en faire partie."))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['abodumois'])
+def abodumois(message):
+    bot.send_message(message.chat.id, 'Abonné du mois : ...')

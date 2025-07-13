@@ -1,2 +1,7 @@
-def register_vision(bot):
-    bot.add_command('vision', lambda msg: bot.send_message(msg.chat.id, "📜 *Vision de Gedaj*\nUnir les passionnés de cinéma, manga, animation, et créer une communauté geek soudée."))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['vision'])
+def vision(message):
+    bot.send_message(message.chat.id, 'Partage ta vision du film.')

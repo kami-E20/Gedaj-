@@ -1,2 +1,7 @@
-def register_filmdujour(bot):
-    bot.add_command('filmdujour', lambda msg: bot.send_message(msg.chat.id, "🎬 Voici le *film ou l’animation du jour* !\nRéagis avec ❤️ ou 👍 pour débloquer plus !"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['filmdujour'])
+def filmdujour(message):
+    bot.send_message(message.chat.id, 'Film du jour : ...')

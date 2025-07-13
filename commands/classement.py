@@ -1,2 +1,7 @@
-def register_classement(bot):
-    bot.add_command('classement', lambda msg: bot.send_message(msg.chat.id, "📊 Voici le *top 10 des abonnés les plus actifs* cette semaine !"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['classement'])
+def classement(message):
+    bot.send_message(message.chat.id, 'Classement des fans 🔝')

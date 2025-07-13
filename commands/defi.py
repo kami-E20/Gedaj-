@@ -1,2 +1,7 @@
-def register_defi(bot):
-    bot.add_command('defi', lambda msg: bot.send_message(msg.chat.id, "🎯 Défi bonus du jour : réponds correctement et gagne +10 points !"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['defi'])
+def defi(message):
+    bot.send_message(message.chat.id, 'Défi du jour lancé 💥')

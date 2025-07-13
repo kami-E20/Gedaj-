@@ -1,2 +1,7 @@
-def register_fanpass(bot):
-    bot.add_command('fanpass', lambda msg: bot.send_message(msg.chat.id, "🧢 Le *Fan Pass* est un rôle spécial réservé aux abonnés les plus actifs.\nContinue d’interagir pour le débloquer !"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['fanpass'])
+def fanpass(message):
+    bot.send_message(message.chat.id, 'Voici votre Fan Pass 🎟️')

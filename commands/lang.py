@@ -1,2 +1,7 @@
-def register_lang(bot):
-    bot.add_command('lang', lambda msg: bot.send_message(msg.chat.id, "🌐 Choisis ta langue préférée :\n🇫🇷 Français\n🇬🇧 Anglais"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['lang'])
+def lang(message):
+    bot.send_message(message.chat.id, 'Choisissez votre langue.')

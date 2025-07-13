@@ -1,2 +1,7 @@
-def register_correction(bot):
-    bot.add_command('correction', lambda msg: bot.send_message(msg.chat.id, "✅ Voici les réponses du *quiz précédent*.\nMerci d’avoir participé, tes points ont été mis à jour !"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['correction'])
+def correction(message):
+    bot.send_message(message.chat.id, 'Correction en cours...')

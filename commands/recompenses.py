@@ -1,2 +1,7 @@
-def register_recompenses(bot):
-    bot.add_command('recompenses', lambda msg: bot.send_message(msg.chat.id, "🎁 Récompenses du mois :\n1er : FanPass + Certificat + Affiche HD\n2e-5e : Affiches exclusives + rôles spéciaux"))
+from telebot import TeleBot
+
+bot = TeleBot('TOKEN')
+
+@bot.message_handler(commands=['recompenses'])
+def recompenses(message):
+    bot.send_message(message.chat.id, 'Récompenses débloquées 🏆')
