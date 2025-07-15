@@ -3,6 +3,9 @@ import os
 
 SUGGESTION_FILE = "data/suggestions.json"
 
+# IDs des admins à notifier
+ADMINS = [5618445554, 879386491]  # Anthony & Kâmį
+
 def register_suggestion(bot):
     @bot.message_handler(commands=['suggestion'])
     def ask_for_suggestion(message):
@@ -16,6 +19,8 @@ def register_suggestion(bot):
 
     def save_suggestion(message):
         user_id = message.from_user.id
+        username = message.from_user.username or ""
+        first_name = message.from_user.first_name or ""
         suggestion_text = message.text.strip()
 
         if not suggestion_text:
@@ -24,7 +29,8 @@ def register_suggestion(bot):
 
         suggestion = {
             "user_id": user_id,
-            "username": message.from_user.username or "",
+            "username": username,
+            "first_name": first_name,
             "text": suggestion_text
         }
 
@@ -41,3 +47,12 @@ def register_suggestion(bot):
             json.dump(suggestions, f, ensure_ascii=False, indent=2)
 
         bot.send_message(message.chat.id, "✅ Merci ! Ta suggestion a bien été enregistrée.")
+
+        # 🔔 Notification aux admins
+        admin_message = (
+            "📬 *Nouvelle suggestion reçue !*\n\n"
+            f"👤 *De :* `{first_name}` (@{username})\n"
+            f"🎥 *Suggestion :* `{suggestion_text}`"
+        )
+        for admin_id in ADMINS:
+            bot.send_message(admin_id, admin_message, parse_mode="Markdown")
