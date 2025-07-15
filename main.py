@@ -17,7 +17,7 @@ bot = TeleBot(TOKEN)
 from commands import (
     start, help, quiz, correction, filmdujour, suggestion, spoiler, avis, fanpass,
     classement, translate, lang, abodumois, inviter, prochainfilm, vision, defi,
-    source, recompenses
+    source, recompenses, textlistener
 )
 
 start.register_start(bot)
@@ -39,6 +39,7 @@ vision.register_vision(bot)
 defi.register_defi(bot)
 source.register_source(bot)
 recompenses.register_recompenses(bot)
+textlistener.register_text_listener(bot)  # ✅ Ajout ici
 
 # -------------------------
 # 🛡️ COMMANDES ADMIN ONLY
