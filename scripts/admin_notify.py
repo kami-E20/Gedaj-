@@ -1,3 +1,5 @@
+# scripts/admin_notify.py
+
 import os
 from telebot import TeleBot
 from datetime import datetime
@@ -14,7 +16,11 @@ def send_admin_news(bot: TeleBot, news, categorie="Actu"):
         f"📌 Résumé : {news['description'][:250]}...\n"
         f"🔗 Source : {news.get('lien', 'Aucune')}"
     )
+
     for admin_id in admin_ids:
-        bot.send_message(admin_id, msg)
-        if 'image' in news:
-            bot.send_photo(admin_id, news['image'])
+        try:
+            bot.send_message(admin_id, msg)
+            if 'image' in news:
+                bot.send_photo(admin_id, news['image'])
+        except Exception as e:
+            print(f"❌ Erreur d’envoi à l’admin {admin_id} : {e}")
