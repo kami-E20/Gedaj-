@@ -1,42 +1,39 @@
+import os
+from telebot import TeleBot
+from apscheduler.schedulers.background import BackgroundScheduler
+from pytz import timezone
+from datetime import datetime
+from scripts import publish
 
-import schedule
-import time
-import threading
-import subprocess
+def main():
+    # Charger le token depuis variable d'environnement
+    TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+    if not TOKEN:
+        print("❌ TELEGRAM_BOT_TOKEN non défini !")
+        return
 
-def run_script(path):
-    try:
-        subprocess.run(["python", path], check=True)
-    except Exception as e:
-        print(f"Erreur lors de l'exécution de {path} :", e)
+    bot = TeleBot(TOKEN)
 
-def schedule_tasks():
-    # ⏰ 09h00 - Actualités privées aux admins (anilist + RSS)
-    schedule.every().day.at("09:00").do(run_script, path="scripts/notify_blocks.py")
+    # Configurer scheduler avec timezone Kinshasa
+    sched = BackgroundScheduler(timezone=timezone("Africa/Kinshasa"))
 
-    # ⏰ 12h00 - Film du jour
-    schedule.every().day.at("12:00").do(run_script, path="scripts/publish.py")
+    # Jobs planifiés à 09:00 tous les jours
+    sched.add_job(publish.publier_actu_privee, 'cron', hour=9, minute=0, args=[bot])
+    sched.add_job(publish.publier_film, 'cron', hour=9, minute=0, args=[bot])
+    sched.add_job(publish.publier_quiz, 'cron', hour=9, minute=0, args=[bot])
+    sched.add_job(publish.publier_correction, 'cron', hour=9, minute=5, args=[bot])  # correction un peu après quiz
+    sched.add_job(publish.sauvegarder_donnees, 'cron', hour=23, minute=55, args=[bot])  # sauvegarde la nuit
 
-    # ⏰ 15h00 - Quiz du jour
-    schedule.every().day.at("15:00").do(run_script, path="scripts/generate_quiz_message.py")
+    # Autres publications à horaires spécifiques (exemple hebdomadaire dimanche 20h)
+    sched.add_job(publish.envoyer_statistiques, 'cron', day_of_week='sun', hour=20, minute=0, args=[bot])
+    sched.add_job(publish.publier_meilleurs_abonnes, 'cron', day_of_week='sun', hour=20, minute=15, args=[bot])
+    sched.add_job(publish.publier_abonnes_du_mois, 'cron', day=1, hour=10, minute=0, args=[bot])  # 1er du mois
 
-    # ⏰ 23h00 - Correction du quiz
-    schedule.every().day.at("23:00").do(run_script, path="scripts/correction.py")
+    sched.start()
+    print("✅ Scheduler démarré, publications planifiées")
 
-    # ⏰ 23h59 - Sauvegarde des données
-    schedule.every().day.at("23:59").do(run_script, path="scripts/backup.py")
+    # Pour garder le programme vivant
+    bot.infinity_polling()
 
-    # ⏰ Dimanche 18h - Statistiques hebdo
-    schedule.every().sunday.at("18:00").do(run_script, path="scripts/stats.py")
-
-    # ⏰ Dimanche 20h - Top abonnés de la semaine
-    schedule.every().sunday.at("20:00").do(run_script, path="scripts/top_weekly.py")
-
-def run_scheduler():
-    schedule_tasks()
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-def start():
-    threading.Thread(target=run_scheduler).start()
+if __name__ == "__main__":
+    main()
