@@ -1,4 +1,4 @@
-# initialize_json.py
+# scripts/initialize_json.py
 
 import os
 import json
@@ -24,10 +24,37 @@ REQUIRED_FILES = {
             }
         }
     },
+    f"{DATA_DIR}/celeb_anniversaires.json": [],
+    f"{DATA_DIR}/text_intelligence.json": {},
+
     f"{BACKUP_DIR}/users_backup.json": {},
     f"{BACKUP_DIR}/ranking_backup.json": {},
     f"{BACKUP_DIR}/reaction_logs_backup.json": {},
 }
+
+# Crée les quiz_01.json à quiz_31.json
+for i in range(1, 32):
+    path = f"{DATA_DIR}/quiz/quiz_{i}.json"
+    REQUIRED_FILES[path] = {
+        "question": "",
+        "options": [],
+        "reponse": "",
+        "explication": ""
+    }
+
+# Crée les films 01.json à 31.json
+for i in range(1, 32):
+    path = f"{DATA_DIR}/films/{i:02}.json"
+    REQUIRED_FILES[path] = {
+        "titre": "",
+        "description": "",
+        "image": "",
+        "plateformes": [],
+        "annee": "",
+        "pays": "",
+        "genre": [],
+        "lien_telechargement": ""
+    }
 
 def create_missing_files():
     for path, default_content in REQUIRED_FILES.items():
@@ -41,53 +68,5 @@ def create_missing_files():
         else:
             print(f"🟡 Déjà existant : {path}")
 
-def create_quiz_files():
-    quiz_dir = os.path.join(DATA_DIR, "quiz")
-    os.makedirs(quiz_dir, exist_ok=True)
-
-    model = {
-        "question": "",
-        "options": ["", "", "", ""],
-        "correct_index": 0
-    }
-
-    for i in range(1, 32):
-        filename = f"quiz_{i:02d}.json"
-        path = os.path.join(quiz_dir, filename)
-        if not os.path.exists(path):
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(model, f, indent=4)
-            print(f"✅ Quiz créé : {path}")
-        else:
-            print(f"🟡 Quiz existant : {path}")
-
-def create_film_files():
-    films_dir = os.path.join(DATA_DIR, "films")
-    os.makedirs(films_dir, exist_ok=True)
-
-    model = {
-        "titre": "",
-        "description": "",
-        "image_url": "",
-        "categorie": "",
-        "annee": "",
-        "pays": "",
-        "realisateur": "",
-        "plateformes": []
-    }
-
-    for i in range(1, 32):
-        filename = f"{i:02d}.json"
-        path = os.path.join(films_dir, filename)
-        if not os.path.exists(path):
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(model, f, indent=4)
-            print(f"✅ Film créé : {path}")
-        else:
-            print(f"🟡 Film existant : {path}")
-
 if __name__ == "__main__":
     create_missing_files()
-    create_quiz_files()
-    create_film_files()
-    print("\n📦 Initialisation JSON terminée.")
