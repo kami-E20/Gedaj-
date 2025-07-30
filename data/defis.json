@@ -1,26 +1,26 @@
 {
-    "2025": {
-        "juillet": {
-            "semaine_1": {
-                "titre": "",
-                "description": "",
-                "points": 0
-            },
-            "semaine_2": {
-                "titre": "",
-                "description": "",
-                "points": 0
-            },
-            "semaine_3": {
-                "titre": "",
-                "description": "",
-                "points": 0
-            },
-            "semaine_4": {
-                "titre": "",
-                "description": "",
-                "points": 0
-            }
-        }
+  "2025": {
+    "juillet": {
+      "semaine_1": {
+        "titre": "Défi Geek #1",
+        "description": "Partage ta scène préférée d’un film culte avec le hashtag #GeekmaniaScene.",
+        "type": "texte"
+      },
+      "semaine_2": {
+        "titre": "Fan Art Challenge",
+        "description": "https://example.com/fanart_defi.jpg",
+        "type": "image"
+      },
+      "semaine_3": {
+        "titre": "Blind Test Audio 🎧",
+        "description": "https://example.com/audio_defi.mp3",
+        "type": "audio"
+      },
+      "semaine_4": {
+        "titre": "Débat du Mois",
+        "description": "Quel est le meilleur film Marvel de la phase 4 ? Réponds en commentaire !",
+        "type": "texte"
+      }
     }
+  }
 }
