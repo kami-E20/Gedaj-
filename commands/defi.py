@@ -2,23 +2,31 @@ import json
 import os
 from datetime import datetime
 
-def get_current_week_number():
-    """Retourne la semaine du mois (1 à 4)"""
-    today = datetime.today()
-    day = today.day
-    return min(((day - 1) // 7) + 1, 4)
+DEFI_FILE = "data/defis.json"
+
+def get_current_context():
+    """Retourne année, mois texte (ex: juillet), et semaine"""
+    now = datetime.now()
+    year = str(now.year)
+    mois = now.strftime("%B").lower()  # ex: 'juillet'
+    semaine = f"semaine_{min(((now.day - 1) // 7) + 1, 4)}"
+    return year, mois, semaine
 
 def get_defi_du_moment():
-    semaine = get_current_week_number()
-    path = f"data/defis/semaine{semaine}.json"
-
-    if not os.path.exists(path):
+    if not os.path.exists(DEFI_FILE):
         return None, None, None
 
-    with open(path, "r", encoding="utf-8") as f:
-        defi = json.load(f)
+    try:
+        with open(DEFI_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
 
-    return defi.get("titre"), defi.get("contenu"), defi.get("type")
+        year, mois, semaine = get_current_context()
+        defi = data.get(year, {}).get(mois, {}).get(semaine, {})
+
+        return defi.get("titre"), defi.get("description"), defi.get("type")
+    except Exception as e:
+        print("❌ Erreur lecture défi :", e)
+        return None, None, None
 
 def register_defi(bot):
     @bot.message_handler(commands=['defi'])
@@ -29,7 +37,8 @@ def register_defi(bot):
             bot.send_message(message.chat.id, "⚠️ Aucun défi n'est disponible cette semaine.")
             return
 
-        intro = f"🎯 *{titre}* — *Semaine {get_current_week_number()}*\n\n"
+        semaine = get_current_context()[2][-1]  # Récupère le numéro (ex: '4' depuis 'semaine_4')
+        intro = f"🎯 *{titre}* — *Semaine {semaine}*\n\n"
 
         if type_defi == "texte":
             bot.send_message(message.chat.id, intro + contenu, parse_mode="Markdown")
