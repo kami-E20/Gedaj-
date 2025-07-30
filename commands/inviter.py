@@ -1,39 +1,43 @@
 import json
 import os
-from datetime import datetime
+from scripts.points import ajouter_points
 
-RANKING_FILE = "data/ranking.json"
+REACTION_LOGS = "data/reaction_logs.json"
 
-def update_points(user_id, amount):
+def log_invitation(user_id):
     os.makedirs("data", exist_ok=True)
-    if os.path.exists(RANKING_FILE):
-        with open(RANKING_FILE, "r", encoding="utf-8") as f:
-            ranking = json.load(f)
-    else:
-        ranking = {}
-
     user_id = str(user_id)
-    if user_id not in ranking:
-        ranking[user_id] = {"points": 0, "last_active": "2025-01-01"}
 
-    ranking[user_id]["points"] += amount
-    ranking[user_id]["last_active"] = datetime.now().strftime("%Y-%m-%d")
+    if os.path.exists(REACTION_LOGS):
+        with open(REACTION_LOGS, "r", encoding="utf-8") as f:
+            logs = json.load(f)
+    else:
+        logs = {}
 
-    with open(RANKING_FILE, "w", encoding="utf-8") as f:
-        json.dump(ranking, f, ensure_ascii=False, indent=2)
+    if user_id not in logs:
+        logs[user_id] = {"reactions": 0, "invitations": 0}
+
+    logs[user_id]["invitations"] = logs[user_id].get("invitations", 0) + 1
+
+    with open(REACTION_LOGS, "w", encoding="utf-8") as f:
+        json.dump(logs, f, ensure_ascii=False, indent=2)
+
+    return logs[user_id]["invitations"]
 
 def register_inviter(bot):
     @bot.message_handler(commands=['inviter'])
     def handle_inviter(message):
         user_id = message.from_user.id
-        update_points(user_id, 3)  # +3 points pour avoir invité (commande utilisée)
+        ajouter_points(user_id, "invitation")
+        total_invitations = log_invitation(user_id)
 
         texte = (
             "📢 *Invite tes amis à rejoindre Geekmania !*\n\n"
             "Plus on est nombreux, plus c'est fun 🎉\n"
-            "Voici ton lien d'invitation unique :\n"
-            "https://t.me/GEEKMANIA\n\n"
-            "🔗 Chaque fois que tu utilises cette commande, tu gagnes *3 points* !\n"
+            "Voici le lien d’invitation de Geekmania :\n"
+            "➡️ https://t.me/GEEKMANIA\n\n"
+            "🔗 Chaque fois que tu utilises cette commande, tu gagnes *10 points* !\n"
+            f"📈 Tu as déjà utilisé cette commande *{total_invitations} fois*.\n"
             "Utilise aussi la commande /classement pour suivre ton évolution."
         )
         bot.send_message(message.chat.id, texte, parse_mode="Markdown")
