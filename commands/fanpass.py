@@ -4,6 +4,7 @@ from datetime import datetime
 
 RANKING_FILE = "data/ranking.json"
 REACTIONS_FILE = "data/reaction_logs.json"
+FANPASS_FILE = "data/fanpass.json"
 
 def register_fanpass(bot):
     @bot.message_handler(commands=['fanpass'])
@@ -16,12 +17,14 @@ def register_fanpass(bot):
         # 📊 Charger les données
         ranking = load_json(RANKING_FILE)
         reactions = load_json(REACTIONS_FILE)
+        fanpass_data = load_json(FANPASS_FILE)
 
-        # 🎯 Trouver les stats utilisateur
-        user_points = ranking.get(user_id, {}).get("points", 0)
-        last_active = ranking.get(user_id, {}).get("last_active", "Inconnu")
+        # ✅ Vérification points
+        user_info = ranking.get(user_id, {})
+        user_points = user_info.get("points", 0)
+        last_active = user_info.get("last_active", "Inconnu")
 
-        # 🔄 Formater la date
+        # 🔄 Format de date
         try:
             last_date = datetime.strptime(last_active, "%Y-%m-%d")
             delta_days = (datetime.now() - last_date).days
@@ -33,7 +36,7 @@ def register_fanpass(bot):
         except:
             last_active_text = "non enregistrée"
 
-        # ⭐ Calculer niveau d’engagement
+        # ⭐ Calcul niveau
         if user_points >= 100:
             niveau = "⭐⭐⭐⭐⭐"
             statut = "Ultra-fan 🔥"
@@ -50,7 +53,7 @@ def register_fanpass(bot):
             niveau = "⭐"
             statut = "Débutant"
 
-        # 🏆 Calcul du classement
+        # 🏆 Position classement
         top = sorted(ranking.items(), key=lambda x: x[1].get("points", 0), reverse=True)
         position = next((i + 1 for i, (uid, _) in enumerate(top) if uid == user_id), None)
 
@@ -60,7 +63,7 @@ def register_fanpass(bot):
             "📌 Continue comme ça pour intégrer le top 10 !"
         )
 
-        # 🧾 Réponse complète
+        # 🧾 Message utilisateur
         texte = (
             "🎟️ *Ton Fan Pass Geekmania*\n\n"
             f"👤 *Utilisateur :* {first_name} (@{username})\n"
@@ -73,6 +76,19 @@ def register_fanpass(bot):
 
         bot.send_message(message.chat.id, texte, parse_mode="Markdown")
 
+        # 💾 Enregistrer dans fanpass.json
+        fanpass_data[user_id] = {
+            "first_name": first_name,
+            "username": username,
+            "statut": statut,
+            "niveau": niveau,
+            "points": user_points,
+            "last_active": last_active,
+            "top_position": position
+        }
+
+        with open(FANPASS_FILE, "w", encoding="utf-8") as f:
+            json.dump(fanpass_data, f, indent=2, ensure_ascii=False)
 
 def load_json(path):
     if os.path.exists(path):
