@@ -1,52 +1,42 @@
-# commands_admin/restorebackup.py
-
-from telebot.types import Message
-import shutil
 import os
+import shutil
+from telebot import TeleBot
 
-AUTHORIZED_ADMINS = [879386491, 5618445554]  # Kâmį & Anthony
+# ✅ Liste des admins autorisés
+AUTHORIZED_ADMINS = [5618445554, 879386491]  # Anthony & Kâmį
 
-DATA_DIR = "data"
-BACKUP_DIR = "backup"
-
-FILES_TO_RESTORE = {
-    "users_backup.json": "users.json",
-    "ranking_backup.json": "ranking.json",
-    "reaction_logs_backup.json": "reaction_logs.json"
+# 🔁 Paires de fichiers à restaurer
+RESTORE_MAP = {
+    "backup/users_backup.json": "data/users.json",
+    "backup/ranking_backup.json": "data/ranking.json",
+    "backup/reaction_logs_backup.json": "data/reaction_logs.json"
 }
 
-def admin_only(handler):
-    def wrapper(message: Message):
-        if message.from_user.id not in AUTHORIZED_ADMINS:
-            message.bot.send_message(
-                message.chat.id,
-                "🚫 Cette commande est réservée aux administrateurs du bot.\n\n"
-                "📬 Si vous avez une suggestion, une remarque ou un problème :\n"
-                "• Utilisez /call pour contacter un admin\n"
-                "• Partagez votre /avis\n"
-                "• Ou proposez une /suggestion\n\n"
-                "Merci pour votre compréhension 🙏"
-            )
-            return
-        return handler(message)
-    return wrapper
-
-def register_restorebackup(bot):
-
+def register_restorebackup(bot: TeleBot):
     @bot.message_handler(commands=['restorebackup'])
-    @admin_only
-    def handle_restorebackup(message: Message):
-        try:
-            restored = []
-            for backup_file, target_file in FILES_TO_RESTORE.items():
-                backup_path = os.path.join(BACKUP_DIR, backup_file)
-                target_path = os.path.join(DATA_DIR, target_file)
-                if os.path.exists(backup_path):
-                    shutil.copy2(backup_path, target_path)
-                    restored.append(target_file)
-            if restored:
-                bot.send_message(message.chat.id, f"✅ Restauration terminée pour : {', '.join(restored)}.")
+    def handle_restorebackup(message):
+        user_id = message.from_user.id
+
+        # 🔒 Vérification admin
+        if user_id not in AUTHORIZED_ADMINS:
+            bot.reply_to(message, "⛔ Cette commande est réservée aux administrateurs.\nUtilise /call ou /suggestion pour contacter l’équipe.")
+            return
+
+        success_count = 0
+        errors = []
+
+        for src, dest in RESTORE_MAP.items():
+            if os.path.exists(src):
+                try:
+                    shutil.copy(src, dest)
+                    success_count += 1
+                except Exception as e:
+                    errors.append(f"❌ Erreur sur {src} → {e}")
             else:
-                bot.send_message(message.chat.id, "⚠️ Aucun fichier de sauvegarde trouvé.")
-        except Exception as e:
-            bot.send_message(message.chat.id, f"❌ Erreur lors de la restauration : {e}")
+                errors.append(f"⚠️ Fichier de sauvegarde manquant : {src}")
+
+        # ✅ Résumé de l’opération
+        if success_count > 0:
+            bot.send_message(message.chat.id, f"✅ {success_count} fichiers restaurés avec succès.")
+        if errors:
+            bot.send_message(message.chat.id, "\n".join(errors))
