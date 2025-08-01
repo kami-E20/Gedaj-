@@ -2,14 +2,13 @@ def register_vision(bot):
     @bot.message_handler(commands=['vision'])
     def handle_vision(message):
         texte = (
-            "🎯 *Vision de Geekmania*\n\n"
-            "Geekmania a pour mission de rassembler tous les passionnés de cinéma, séries, et animations\n"
-            "autour d’une communauté active, bienveillante et passionnée.\n\n"
-            "🌟 Nous voulons créer un espace où chacun peut :\n"
-            "• Découvrir des films et animations de qualité 🎬\n"
-            "• Tester ses connaissances avec des quiz ludiques 🧠\n"
-            "• Partager ses avis et suggestions 🗣️\n"
-            "• Participer à des défis et concours réguliers 🏆\n\n"
-            "🚀 Rejoins-nous pour vivre cette aventure geek unique et enrichissante !"
+            "🎥 *Notre Vision chez Geekmania :*\n\n"
+            "Créer la meilleure communauté de passionnés de cinéma, d’animation et de pop culture 🎬✨\n\n"
+            "Chaque jour, nous te proposons :\n"
+            "• Des films à découvrir\n"
+            "• Des quiz ludiques\n"
+            "• Des défis originaux\n"
+            "• Des classements et récompenses\n\n"
+            "Rejoins-nous dans cette aventure geek, et montre que tu es un vrai fan ! ❤️👾"
         )
         bot.send_message(message.chat.id, texte, parse_mode="Markdown")
