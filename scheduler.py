@@ -1,39 +1,52 @@
-import os
-from telebot import TeleBot
-from apscheduler.schedulers.background import BackgroundScheduler
-from pytz import timezone
 from datetime import datetime
-from scripts import publish
+from time import sleep
+from loader import bot
+from scripts.publish import (
+    publier_film,
+    publier_quiz,
+    publier_correction,
+    publier_actu_privee,
+    envoyer_statistiques,
+    publier_meilleurs_abonnes,
+    publier_abonnes_du_mois,
+    sauvegarder_donnees,
+)
+from scripts.backup import backup_donnees
 
-def main():
-    # Charger le token depuis variable d'environnement
-    TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-    if not TOKEN:
-        print("❌ TELEGRAM_BOT_TOKEN non défini !")
-        return
+def lancer_taches_scheduled():
+    print("⏱️ Planificateur en marche...")
 
-    bot = TeleBot(TOKEN)
+    while True:
+        now = datetime.now()
 
-    # Configurer scheduler avec timezone Kinshasa
-    sched = BackgroundScheduler(timezone=timezone("Africa/Kinshasa"))
+        heure = now.strftime("%H:%M")
 
-    # Jobs planifiés à 09:00 tous les jours
-    sched.add_job(publish.publier_actu_privee, 'cron', hour=9, minute=0, args=[bot])
-    sched.add_job(publish.publier_film, 'cron', hour=9, minute=0, args=[bot])
-    sched.add_job(publish.publier_quiz, 'cron', hour=9, minute=0, args=[bot])
-    sched.add_job(publish.publier_correction, 'cron', hour=9, minute=5, args=[bot])  # correction un peu après quiz
-    sched.add_job(publish.sauvegarder_donnees, 'cron', hour=23, minute=55, args=[bot])  # sauvegarde la nuit
+        try:
+            # 🕘 Tous les jours à 09h00
+            if heure == "09:00":
+                publier_film(bot)
+                publier_quiz(bot)
+                publier_actu_privee(bot)
 
-    # Autres publications à horaires spécifiques (exemple hebdomadaire dimanche 20h)
-    sched.add_job(publish.envoyer_statistiques, 'cron', day_of_week='sun', hour=20, minute=0, args=[bot])
-    sched.add_job(publish.publier_meilleurs_abonnes, 'cron', day_of_week='sun', hour=20, minute=15, args=[bot])
-    sched.add_job(publish.publier_abonnes_du_mois, 'cron', day=1, hour=10, minute=0, args=[bot])  # 1er du mois
+            # 🕒 Tous les jours à 15h00
+            if heure == "15:00":
+                publier_correction(bot)
 
-    sched.start()
-    print("✅ Scheduler démarré, publications planifiées")
+            # 🕙 Tous les jours à 22h00 : sauvegarde + backup
+            if heure == "22:00":
+                sauvegarder_donnees(bot)
+                backup_donnees(bot)
 
-    # Pour garder le programme vivant
-    bot.infinity_polling()
+            # 📊 Chaque dimanche à 20h00
+            if now.weekday() == 6 and heure == "20:00":
+                envoyer_statistiques(bot)
+                publier_meilleurs_abonnes(bot)
 
-if __name__ == "__main__":
-    main()
+            # 🎁 Le 1er jour de chaque mois à 10h00
+            if now.day == 1 and heure == "10:00":
+                publier_abonnes_du_mois(bot)
+
+        except Exception as e:
+            print("❌ Erreur dans une tâche programmée :", e)
+
+        sleep(60)  # ⏳ Vérifie chaque minute
