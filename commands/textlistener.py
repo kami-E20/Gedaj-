@@ -1,82 +1,48 @@
-from telebot.types import Message
-
-ADMIN_IDS = {
-    5618445554: "Anthony",
-    879386491: "Kami"
-}
-
 def register_text_listener(bot):
+    from telebot.types import Message
 
-    @bot.message_handler(func=lambda m: True, content_types=['text'])
+    @bot.message_handler(func=lambda m: True)
     def handle_text(message: Message):
-        text = message.text.lower().strip()
-        user_id = message.from_user.id
-        username = message.from_user.username or message.from_user.first_name or "utilisateur"
+        text = message.text.lower()
+        user_id = str(message.from_user.id)
+        username = message.from_user.username or ""
+        first_name = message.from_user.first_name or "Toi"
 
-        # Ignore les commandes
-        if text.startswith('/'):
+        # Ignorer les messages non adressés à Gedaj
+        if not ("gedaj" in text or message.reply_to_message and message.reply_to_message.from_user.username == "GedajBot"):
             return
 
-        # Condition : ne répondre que si "gedaj" est mentionné dans le texte
-        # OU si c'est une réponse à un message du bot lui-même
-        is_addressed_to_gedaj = "gedaj" in text
-        is_reply_to_gedaj = message.reply_to_message and message.reply_to_message.from_user and message.reply_to_message.from_user.is_bot
+        if any(greeting in text for greeting in ["bonjour", "salut", "hello"]):
+            bot.send_message(message.chat.id, f"Salut {first_name} 👋 ! Comment puis-je t’aider ?")
 
-        if not (is_addressed_to_gedaj or is_reply_to_gedaj):
-            return  # Ignore tout autre message
+        elif "comment tu vas" in text:
+            bot.send_message(message.chat.id, "Je vais bien, merci ! Et toi ? 😊")
 
-        # Mots/phrases ciblés avec réponses personnalisées
-        if text in ["bonjour gedaj", "bonjour"]:
-            bot.reply_to(message, "👋 Bonjour ! Je suis Gedaj, ravi de te retrouver.")
-            return
+        elif "merci" in text:
+            bot.send_message(message.chat.id, "Je t’en prie, je suis à ton service 💙")
 
-        if text in ["comment vas-tu gedaj", "je vais bien et toi?"]:
-            bot.reply_to(message, "😊 Je vais très bien, merci ! Et toi ?")
-            return
+        elif "le meilleur" in text:
+            bot.send_message(message.chat.id, "Tes compliments me vont droit au processeur 😌")
 
-        if text in ["merci gedaj"]:
-            bot.reply_to(message, "🙏 Je t'en prie, je suis à ton service.")
-            return
+        elif "gedaj tu es beau" in text:
+            bot.send_message(message.chat.id, "Merci 🥰 Je rougis même si je suis un bot !")
 
-        if text in ["tu es le meilleur gedaj"]:
-            bot.reply_to(message, "😊 Tes compliments me flattent, merci beaucoup !")
-            return
+        elif "adorable" in text:
+            bot.send_message(message.chat.id, "🥹 Merci, tu es gentil aussi !")
 
-        if text.startswith("gedaj tu peux"):
-            bot.reply_to(message, "👉 Tape /help pour découvrir tout ce que je peux faire !")
-            return
+        elif "gedaj tu es un robot" in text or "tu es un bot" in text:
+            bot.send_message(message.chat.id, "Oui ! Un assistant geek 🤖 qui adore le cinéma, les quiz et les fans.")
 
-        if text in ["gedaj tu es beau"]:
-            bot.reply_to(message, "😊 Merci, ça me fait plaisir !")
-            return
+        elif "gedaj tu peux" in text:
+            bot.send_message(message.chat.id, "Tape /help pour voir tout ce que je sais faire 🎮")
 
-        if text in ["gedaj tu es un robot"]:
-            bot.reply_to(message, "🤖 Je suis un bot intelligent conçu pour t’aider avec tout ce qui concerne le cinéma, les séries et plus encore !")
-            return
-
-        if text in ["gedaj tu es adorable"]:
-            bot.reply_to(message, "😊🥰")  # Emoji rougis
-            return
-
-        if text.startswith("gedaj"):
-            if user_id in ADMIN_IDS:
-                if ADMIN_IDS[user_id] == "Kami":
-                    bot.reply_to(message, "Oui papa 👑")
-                elif ADMIN_IDS[user_id] == "Anthony":
-                    bot.reply_to(message, "Oui tonton 👋")
-                else:
-                    bot.reply_to(message, "Présent et toujours disponible ! Tape /help pour voir mes fonctionnalités.")
+        elif text.startswith("gedaj"):
+            if user_id == "879386491":
+                bot.send_message(message.chat.id, "Oui papa 😇")
+            elif user_id == "5618445554":
+                bot.send_message(message.chat.id, "Oui tonton 🙏")
             else:
-                bot.reply_to(message, "Présent et toujours disponible ! Tape /help pour voir mes fonctionnalités.")
-            return
+                bot.send_message(message.chat.id, "Présent et toujours disponible ! Tape /help 🎬")
 
-        # Réponses génériques à quelques salutations courtes
-        salutations = ["salut", "hello", "coucou"]
-        if any(s in text for s in salutations):
-            bot.reply_to(message, f"👋 Salut {username}! Tape /help pour découvrir mes commandes.")
-            return
-
-        # Merci générique
-        if "merci" in text:
-            bot.reply_to(message, "🙏 Avec plaisir !")
-            return
+        else:
+            bot.send_message(message.chat.id, "Je suis là ! Tu peux utiliser une commande ou m’écrire gentiment 😉")
