@@ -1,97 +1,90 @@
-from telebot import TeleBot
-from telebot.types import Message
-from datetime import datetime
 import json
 import os
+from datetime import datetime
 
-# IDs des admins à notifier (Anthony et Kâmį)
-ADMIN_IDS = [5618445554, 879386491]
+RANKING_FILE = "data/ranking.json"
+REACTIONS_LOG = "data/reaction_logs.json"
 
-# Seuil de réactions pour débloquer le lien
-SEUIL_REACTIONS = 20
+# Réactions classées
+REACTIONS_POSITIVES = ["❤️", "👍", "🔥", "👏", "💯", "🤩", "🥰", "😁", "😎", "😍"]
+REACTIONS_NEGATIVES = ["👎", "😢", "😭", "😡", "🤬", "😠", "😒", "😞", "💔"]
+REACTIONS_NEUTRES = ["😐", "🤔", "🙃", "😶"]
+REACTIONS_DRÔLES = ["😂", "🤣", "😹", "😆", "😜", "😝"]
+REACTIONS_SURPRISE = ["😮", "😲", "🤯", "😳"]
+REACTIONS_INAPPROPRIÉES = ["💩", "🖕", "🖤", "🔞", "😤", "🤮", "🤢", "🧨", "🔫", "😈"]
 
-# Réactions valides à compter
-REACTIONS_VALIDES = ["❤️", "👍"]
+# Toutes les réactions supportées
+SUPPORTED_REACTIONS = (
+    REACTIONS_POSITIVES +
+    REACTIONS_NEGATIVES +
+    REACTIONS_NEUTRES +
+    REACTIONS_DRÔLES +
+    REACTIONS_SURPRISE +
+    REACTIONS_INAPPROPRIÉES
+)
 
-# Fichier de suivi des réactions (compteur simple)
-REACTIONS_COUNT_FILE = "data/reactions_count.json"
+# Barème de points
+REACTION_POINTS = {
+    "positive": 2,
+    "drôle": 2,
+    "surprise": 1,
+    "neutre": 0,
+    "négative": -1,
+    "inappropriée": -5
+}
 
-# Fichier contenant message_id et chat_id du film publié
-FILM_MESSAGE_FILE = "data/film_message.json"
+def get_reaction_type(emoji):
+    if emoji in REACTIONS_POSITIVES:
+        return "positive"
+    if emoji in REACTIONS_NEGATIVES:
+        return "négative"
+    if emoji in REACTIONS_NEUTRES:
+        return "neutre"
+    if emoji in REACTIONS_DRÔLES:
+        return "drôle"
+    if emoji in REACTIONS_SURPRISE:
+        return "surprise"
+    if emoji in REACTIONS_INAPPROPRIÉES:
+        return "inappropriée"
+    return None
 
+def handle_reaction(user_id, emoji):
+    emoji_type = get_reaction_type(emoji)
+    if not emoji_type:
+        return  # Non pris en charge
 
-def handle_reaction(bot: TeleBot, message: Message):
-    """
-    Gère une réaction reçue en réponse au message film du jour.
-    Incrémente le compteur et envoie le lien aux admins si seuil atteint.
-    """
+    points = REACTION_POINTS.get(emoji_type, 0)
+    user_id = str(user_id)
 
-    try:
-        # On ne traite que les réactions valides en texte
-        if not message.text or message.text not in REACTIONS_VALIDES:
-            return
+    # Charger ranking
+    if os.path.exists(RANKING_FILE):
+        with open(RANKING_FILE, "r", encoding="utf-8") as f:
+            ranking = json.load(f)
+    else:
+        ranking = {}
 
-        # Vérifier que c’est une réaction en réponse au message du film
-        if not message.reply_to_message:
-            return
+    if user_id not in ranking:
+        ranking[user_id] = {"points": 0, "last_active": "2025-01-01"}
 
-        # Charger le message film à suivre
-        if not os.path.exists(FILM_MESSAGE_FILE):
-            return  # Pas de film publié ou suivi
+    ranking[user_id]["points"] += points
+    ranking[user_id]["last_active"] = datetime.now().strftime("%Y-%m-%d")
 
-        with open(FILM_MESSAGE_FILE, "r", encoding="utf-8") as f:
-            film_msg = json.load(f)
+    with open(RANKING_FILE, "w", encoding="utf-8") as f:
+        json.dump(ranking, f, indent=2, ensure_ascii=False)
 
-        if message.reply_to_message.message_id != film_msg["message_id"]:
-            return  # Pas la bonne cible
+    # Log de réaction
+    if os.path.exists(REACTIONS_LOG):
+        with open(REACTIONS_LOG, "r", encoding="utf-8") as f:
+            logs = json.load(f)
+    else:
+        logs = {}
 
-        # Charger ou initialiser compteur des réactions
-        if os.path.exists(REACTIONS_COUNT_FILE):
-            with open(REACTIONS_COUNT_FILE, "r", encoding="utf-8") as f:
-                reactions_data = json.load(f)
-        else:
-            reactions_data = {"count": 0}
+    logs.setdefault(user_id, []).append({
+        "emoji": emoji,
+        "type": emoji_type,
+        "points": points,
+        "date": datetime.now().isoformat()
+    })
 
-        # Incrémenter le compteur
-        reactions_data["count"] += 1
-
-        # Sauvegarder le compteur mis à jour
-        with open(REACTIONS_COUNT_FILE, "w", encoding="utf-8") as f:
-            json.dump(reactions_data, f, ensure_ascii=False, indent=2)
-
-        # Vérifier si seuil atteint
-        if reactions_data["count"] == SEUIL_REACTIONS:
-            envoyer_lien_aux_admins(bot)
-
-    except Exception as e:
-        print("❌ Erreur dans handle_reaction:", e)
-
-
-def envoyer_lien_aux_admins(bot: TeleBot):
-    """
-    Envoie aux admins le lien de téléchargement et plateformes dès que le seuil est atteint.
-    """
-
-    try:
-        jour = datetime.now().day
-        film_file = f"data/films/{jour}.json"
-        if not os.path.exists(film_file):
-            print("❌ Fichier film du jour introuvable pour notification admins.")
-            return
-
-        with open(film_file, "r", encoding="utf-8") as f:
-            film = json.load(f)
-
-        message = (
-            f"📥 Le film *{film.get('titre', 'Inconnu')}* a atteint {SEUIL_REACTIONS} réactions.\n\n"
-            f"🎬 *Lien de téléchargement* : {film.get('lien_telechargement', 'Indisponible')}\n"
-            f"📺 *Plateformes* : {', '.join(film.get('plateformes', []))}"
-        )
-
-        for admin_id in ADMIN_IDS:
-            bot.send_message(admin_id, message, parse_mode="Markdown")
-
-        print("✅ Notification de lien envoyée aux admins.")
-
-    except Exception as e:
-        print("❌ Erreur envoi lien aux admins:", e)
+    with open(REACTIONS_LOG, "w", encoding="utf-8") as f:
+        json.dump(logs, f, indent=2, ensure_ascii=False)
