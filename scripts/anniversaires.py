@@ -2,25 +2,26 @@ import datetime
 import json
 import os
 
-# Fichier de données locales avec les anniversaires connus
-ACTEURS_FILE = os.path.join("data", "anniversaires.json")
+# Nom correct du fichier JSON contenant les anniversaires
+ANNIV_FILE = os.path.join("data", "celeb_anniversaires.json")
 
 def load_anniversaire_data():
-    if not os.path.exists(ACTEURS_FILE):
+    if not os.path.exists(ANNIV_FILE):
         return []
-    with open(ACTEURS_FILE, "r", encoding="utf-8") as f:
+    with open(ANNIV_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
 def fetch_anniversaires():
+    """Retourne la liste des célébrités dont c'est l'anniversaire aujourd'hui."""
     aujourd_hui = datetime.datetime.now().strftime("%m-%d")
-    tous_les_acteurs = load_anniversaire_data()
+    tous = load_anniversaire_data()
     return [
         {
-            "nom": acteur["nom"],
-            "role": acteur.get("role", "Artiste"),
-            "anecdote": acteur.get("anecdote", "Pas d’anecdote disponible."),
-            "date": acteur["date"],
-            "film_recommande": acteur.get("film", "Non spécifié.")
+            "nom": celeb["nom"],
+            "role": celeb.get("role", "Artiste"),
+            "anecdote": celeb.get("anecdote", "Aucune anecdote disponible."),
+            "date": celeb["date"],
+            "film_recommande": celeb.get("film", "Film non précisé")
         }
-        for acteur in tous_les_acteurs if acteur["date"] == aujourd_hui
+        for celeb in tous if celeb["date"] == aujourd_hui
     ]
