@@ -3,7 +3,7 @@ from telebot import TeleBot
 from loader import bot
 from commands import register_user_commands
 from commands_admin import register_admin_commands
-from listeners import register_reaction_listener
+from commands.reaction import register_reaction_handlers
 from scripts.points_logic import sauvegarder_points_utilisateurs
 from scripts.backup import backup_donnees
 
@@ -13,7 +13,7 @@ def main():
     register_admin_commands(bot)
 
     # 🎧 Listeners (réactions, messages texte)
-    register_reaction_listener(bot)
+    register_reaction_handlers(bot)
 
     # 📦 Sauvegarde automatique des données au démarrage
     sauvegarder_points_utilisateurs()
