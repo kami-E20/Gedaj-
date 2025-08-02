@@ -3,7 +3,7 @@ from .anniversaires import fetch_anniversaires
 from .backup import backup_donnees
 from .fetch_anilist_news import fetch_anilist_news
 from .fetch_cinema_news import fetch_cinema_news
-from .notify_block import (
+from .notify_blocks import (
     publier_film,
     publier_quiz,
     publier_correction,
