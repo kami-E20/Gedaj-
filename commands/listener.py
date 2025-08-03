@@ -1,9 +1,9 @@
 from telebot.types import MessageReactionUpdated
 from loader import bot
-from scripts.reactions import get_reaction_type, REACTION_POINTS
+from commands.reaction import get_reaction_type, REACTION_POINTS
 from scripts.points_logic import update_points
 
-CANAL_USERNAME = "@geekmaniaOfficiel" # 🔁 remplace par le bon si nécessaire
+CANAL_USERNAME = "geekmaniaOfficiel"  # ❗ Ne pas inclure le @ ici pour la comparaison
 
 @bot.message_reaction_handler()
 def handle_reactions(reaction: MessageReactionUpdated):
@@ -16,8 +16,8 @@ def handle_reactions(reaction: MessageReactionUpdated):
 
     chat = message.chat
 
-    # ✅ Filtrage : uniquement si la réaction est sur un message du canal
-    if chat.type != "channel" and chat.username != CANAL_USERNAME:
+    # ✅ Ne traiter que les réactions dans le canal officiel
+    if chat.type != "channel" or chat.username != CANAL_USERNAME:
         return
 
     emoji = new_reaction.emoji
