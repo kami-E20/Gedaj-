@@ -3,7 +3,7 @@ from loader import bot
 from scripts.reactions import get_reaction_type, REACTION_POINTS
 from scripts.points_logic import update_points
 
-CANAL_USERNAME = "@geekmaniaOfficiel"  # 🔁 remplace par le bon si nécessaire
+CANAL_USERNAME = @geekmaniaOfficiel  # 🔁 remplace par le bon si nécessaire
 
 @bot.message_reaction_handler()
 def handle_reactions(reaction: MessageReactionUpdated):
