@@ -1,48 +1,71 @@
 def register_text_listener(bot):
     from telebot.types import Message
+    import random
 
-    @bot.message_handler(func=lambda m: True)
+    # 🤖 Liste d'interactions possibles (aléatoire pour éviter la monotonie)
+    SALUTATIONS = [
+        "Salut {name} 👋 ! Que puis-je faire pour toi ?",
+        "Hey {name} ! Content de te revoir 😊",
+        "Bonjour {name}, prêt pour une nouvelle aventure geek ? 🎬"
+    ]
+
+    REP_MERCI = [
+        "Avec plaisir 💙",
+        "Je suis là pour toi !",
+        "Toujours dispo 😉"
+    ]
+
+    REP_COMPLIMENT = [
+        "Tu vas me faire buguer avec tant de compliments 😌",
+        "🥹 Merci, t'es adorable !",
+        "Je vais rougir... enfin, si j’avais un visage 😅"
+    ]
+
+    # Ne réagit qu’aux messages textuels sans "/"
+    @bot.message_handler(func=lambda m: m.text and not m.text.startswith('/'))
     def handle_text(message: Message):
         text = message.text.lower()
         user_id = str(message.from_user.id)
         username = message.from_user.username or ""
         first_name = message.from_user.first_name or "Toi"
 
-        # Ignorer les messages non adressés à Gedaj
-        if not ("gedaj" in text or message.reply_to_message and message.reply_to_message.from_user.username == "GedajBot"):
+        # 🎯 Ne répondre que si le message parle à Gedaj
+        if not ("gedaj" in text or (message.reply_to_message and message.reply_to_message.from_user.username == "GedajBot")):
             return
 
-        if any(greeting in text for greeting in ["bonjour", "salut", "hello"]):
-            bot.send_message(message.chat.id, f"Salut {first_name} 👋 ! Comment puis-je t’aider ?")
+        # ✨ Réponses personnalisées
+        if any(greeting in text for greeting in ["bonjour", "salut", "hello", "yo", "hey"]):
+            bot.send_message(message.chat.id, random.choice(SALUTATIONS).format(name=first_name))
 
-        elif "comment tu vas" in text:
-            bot.send_message(message.chat.id, "Je vais bien, merci ! Et toi ? 😊")
+        elif "comment tu vas" in text or "ça va" in text:
+            bot.send_message(message.chat.id, f"Je vais super bien {first_name} 😁 Et toi ?")
 
         elif "merci" in text:
-            bot.send_message(message.chat.id, "Je t’en prie, je suis à ton service 💙")
+            bot.send_message(message.chat.id, random.choice(REP_MERCI))
 
-        elif "le meilleur" in text:
-            bot.send_message(message.chat.id, "Tes compliments me vont droit au processeur 😌")
+        elif "gedaj tu es beau" in text or "tu es mignon" in text or "t'es trop cute" in text:
+            bot.send_message(message.chat.id, "🥰 Merci beaucoup ! Toi aussi tu déchires !")
 
-        elif "gedaj tu es beau" in text:
-            bot.send_message(message.chat.id, "Merci 🥰 Je rougis même si je suis un bot !")
+        elif any(word in text for word in ["gentil", "le meilleur", "adorable", "intelligent"]):
+            bot.send_message(message.chat.id, random.choice(REP_COMPLIMENT))
 
-        elif "adorable" in text:
-            bot.send_message(message.chat.id, "🥹 Merci, tu es gentil aussi !")
+        elif "tu es un bot" in text or "tu es un robot" in text:
+            bot.send_message(message.chat.id, "Oui 🤖 Mais un bot qui kiffe le cinéma, les quiz et les geeks !")
 
-        elif "gedaj tu es un robot" in text or "tu es un bot" in text:
-            bot.send_message(message.chat.id, "Oui ! Un assistant geek 🤖 qui adore le cinéma, les quiz et les fans.")
+        elif "gedaj tu peux" in text or "gedaj sais-tu" in text:
+            bot.send_message(message.chat.id, "Tu peux taper /help pour découvrir mes super-pouvoirs 🦾")
 
-        elif "gedaj tu peux" in text:
-            bot.send_message(message.chat.id, "Tape /help pour voir tout ce que je sais faire 🎮")
+        elif "gedaj" in text and "aide" in text:
+            bot.send_message(message.chat.id, "Besoin d'aide ? Tape simplement /help ou pose ta question directement 😊")
 
         elif text.startswith("gedaj"):
             if user_id == "879386491":
-                bot.send_message(message.chat.id, "Oui papa 😇")
+                bot.send_message(message.chat.id, "Oui papa 😇 Une demande spéciale ?")
             elif user_id == "5618445554":
-                bot.send_message(message.chat.id, "Oui tonton 🙏")
+                bot.send_message(message.chat.id, "Oui tonton 🙏 Toujours dispo pour toi !")
             else:
-                bot.send_message(message.chat.id, "Présent et toujours disponible ! Tape /help 🎬")
+                bot.send_message(message.chat.id, "Je suis là ! N'hésite pas à taper /help pour voir ce que je sais faire 🎮")
 
         else:
-            bot.send_message(message.chat.id, "Je suis là ! Tu peux utiliser une commande ou m’écrire gentiment 😉")
+            # Dernier recours : réponse fun par défaut
+            bot.send_message(message.chat.id, "Je suis là 👀 Tu peux me parler ou utiliser une commande comme /help 😉")
