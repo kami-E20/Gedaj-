@@ -19,7 +19,7 @@ from .source import register_source
 from .recompenses import register_recompenses
 from .textlistener import register_text_listener  # 🧠 écoute des messages texte
 from .listener import handle_reactions  # 🎯 écoute des réactions dans le canal
-from .reactions import get_reaction_type, REACTION_POINTS  # 💥 logique de réactions
+from .reaction import get_reaction_type, REACTION_POINTS  # 💥 logique de réactions
 
 def register_user_commands(bot):
     register_start(bot)
