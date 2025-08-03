@@ -1,28 +1,29 @@
 import os
-from telebot import TeleBot
 from loader import bot
 from commands import register_user_commands
 from commands_admin import register_admin_commands
-from commands.reaction import register_reaction_handlers
-from scripts.points_logic import sauvegarder_points_utilisateurs
-from scripts.backup import backup_donnees
+from commands.listener import handle_reactions  # ✅ listener (gestion des réactions du canal)
+from scripts import (  # ✅ grâce à __init__.py de scripts, import groupé
+    backup_donnees,
+    sauvegarder_donnees,
+    sauvegarder_points_utilisateurs
+)
 
 def main():
-    # 🔧 Enregistrement des commandes utilisateurs et admin
+    # ✅ Enregistrement des commandes utilisateur et admin
     register_user_commands(bot)
     register_admin_commands(bot)
 
-    # 🎧 Listeners (réactions, messages texte)
-    register_reaction_handlers(bot)
+    # ✅ Démarrage du listener pour les réactions dans le canal (déjà importé donc activé)
+    print("🎧 Récepteur de réactions activé.")
 
-    # 📦 Sauvegarde automatique des données au démarrage
+    # ✅ Sauvegarde initiale de sécurité
     sauvegarder_points_utilisateurs()
     backup_donnees(bot)
 
-    # 🚀 Démarrage du bot en polling
+    # ✅ Lancement du bot
     print("✅ GedajBot est maintenant en ligne.")
     bot.infinity_polling(skip_pending=True)
-
 
 if __name__ == "__main__":
     main()
