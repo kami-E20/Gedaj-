@@ -1,62 +1,60 @@
-import json
-import os
+import json, os
 from datetime import datetime
+from telebot.types import Message
 
-SUGGESTION_FILE = "data/suggestions.json"
-ADMINS = [5618445554, 879386491]  # Anthony & Kâmį
+SUG_FILE = "data/suggestions.json"
+ADMINS = [5618445554, 879386491]
 
 def register_suggestion(bot):
     @bot.message_handler(commands=['suggestion'])
-    def ask_for_suggestion(message):
-        bot.send_message(
-            message.chat.id,
-            "💡 *Quelle est ta suggestion ?*\n\n"
-            "Envoie-moi maintenant le titre d’un film, une série, un manga ou une animation que tu aimerais voir apparaître sur Geekmania.",
-            parse_mode="Markdown"
-        )
-        bot.register_next_step_handler(message, save_suggestion)
+    def handle_suggestion_command(message: Message):
+        text = message.text.replace("/suggestion", "").strip()
+        if text:
+            save_suggestion(bot, message, text)
+        else:
+            msg = bot.send_message(
+                message.chat.id,
+                "💡 *Propose une suggestion !*\n\n👉 Réponds à ce message, ou utilise la commande comme ceci : `/suggestion Ta suggestion ici`",
+                parse_mode="Markdown"
+            )
+            bot.register_next_step_handler(msg, ask_suggestion)
 
-    def save_suggestion(message):
-        user_id = message.from_user.id
-        username = message.from_user.username
-        first_name = message.from_user.first_name or "Utilisateur"
-        suggestion_text = message.text.strip()
+    def ask_suggestion(reply_msg: Message):
+        @bot.message_handler(func=lambda m: m.reply_to_message and m.reply_to_message.message_id == reply_msg.message_id)
+        def handle_reply(message: Message):
+            save_suggestion(bot, message, message.text.strip())
 
-        if not suggestion_text:
-            bot.send_message(message.chat.id, "❌ Suggestion vide. Réessaie avec un vrai titre.")
-            return
+def save_suggestion(bot, message, text):
+    if not text:
+        bot.send_message(message.chat.id, "❌ Suggestion vide. Réessaie.")
+        return
 
-        # Construction de l'entrée
-        suggestion = {
-            "user_id": user_id,
-            "username": username,
-            "first_name": first_name,
-            "text": suggestion_text,
-            "date": datetime.now().strftime("%Y-%m-%d %H:%M")
-        }
+    suggestion = {
+        "user_id": message.from_user.id,
+        "username": message.from_user.username or "",
+        "first_name": message.from_user.first_name or "",
+        "text": text,
+        "date": datetime.now().strftime("%Y-%m-%d %H:%M")
+    }
 
-        os.makedirs("data", exist_ok=True)
+    os.makedirs("data", exist_ok=True)
+    try:
+        with open(SUG_FILE, "r", encoding="utf-8") as f:
+            all_sug = json.load(f)
+    except FileNotFoundError:
+        all_sug = []
 
-        try:
-            with open(SUGGESTION_FILE, "r", encoding="utf-8") as f:
-                suggestions = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            suggestions = []
+    all_sug.append(suggestion)
+    with open(SUG_FILE, "w", encoding="utf-8") as f:
+        json.dump(all_sug, f, ensure_ascii=False, indent=2)
 
-        suggestions.append(suggestion)
+    bot.send_message(message.chat.id, "✅ Merci pour ta suggestion ! Elle a été enregistrée.")
 
-        with open(SUGGESTION_FILE, "w", encoding="utf-8") as f:
-            json.dump(suggestions, f, ensure_ascii=False, indent=2)
-
-        bot.send_message(message.chat.id, "✅ Merci ! Ta suggestion a bien été enregistrée.")
-
-        # 🔔 Notification aux admins
-        mention = f"(@{username})" if username else ""
-        admin_message = (
-            "📬 *Nouvelle suggestion reçue !*\n\n"
-            f"👤 *De :* `{first_name}` {mention}\n"
-            f"🕒 *Date :* {suggestion['date']}\n"
-            f"🎥 *Suggestion :* `{suggestion_text}`"
-        )
-        for admin_id in ADMINS:
-            bot.send_message(admin_id, admin_message, parse_mode="Markdown")
+    msg = (
+        "💡 *Nouvelle suggestion reçue !*\n"
+        f"👤 {suggestion['first_name']} (@{suggestion['username']})\n"
+        f"📅 {suggestion['date']}\n"
+        f"💬 Suggestion : {suggestion['text']}"
+    )
+    for admin_id in ADMINS:
+        bot.send_message(admin_id, msg, parse_mode="Markdown")
