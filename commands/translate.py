@@ -62,3 +62,9 @@ def register_translate_reply(bot):
             bot.reply_to(message, f"💬 Traduction ({target.upper()}) :\n{translated}")
         except Exception:
             bot.reply_to(message, "❌ Traduction impossible.")
+
+# 🔁 Fonction principale d’enregistrement à importer
+def register_translate(bot):
+    register_translate_command(bot)
+    register_translate_reply(bot)
+    register_translation_callbacks(bot)
