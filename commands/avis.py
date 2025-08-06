@@ -12,15 +12,17 @@ def register_avis(bot):
         if text:
             save_avis(bot, message, text)
         else:
-            bot.send_message(
+            msg = bot.send_message(
                 message.chat.id,
-                "🗣️ *Laisse ton avis !*\n\n👉 Tu peux répondre à ce message OU écrire `/avis ton avis ici`",
+                "🗣️ *Laisse ton avis !*\n\n👉 Réponds à ce message, ou utilise la commande comme ceci : `/avis Ton avis ici`",
                 parse_mode="Markdown"
             )
-            bot.register_next_step_handler(message, ask_avis)
+            bot.register_next_step_handler(msg, ask_avis)
 
-    def ask_avis(message: Message):
-        save_avis(bot, message, message.text.strip())
+    def ask_avis(reply_msg: Message):
+        @bot.message_handler(func=lambda m: m.reply_to_message and m.reply_to_message.message_id == reply_msg.message_id)
+        def handle_reply(message: Message):
+            save_avis(bot, message, message.text.strip())
 
 def save_avis(bot, message, text):
     if not text:
@@ -49,7 +51,7 @@ def save_avis(bot, message, text):
     bot.send_message(message.chat.id, "✅ Merci pour ton avis ! Il a été enregistré.")
 
     msg = (
-        "🗣️ *Nouvel avis !*\n"
+        "🗣️ *Nouvel avis reçu !*\n"
         f"👤 {avis['first_name']} (@{avis['username']})\n"
         f"📅 {avis['date']}\n"
         f"💬 {avis['text']}"
