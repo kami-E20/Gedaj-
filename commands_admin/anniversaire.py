@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 ADMINS = [5618445554, 879386491]  # Liste des admins
-ANNIV_FILE = "data/anniversaires.json"
+ANNIV_FILE = "data/anniversaire.json"
 
 def get_today_anniversaires():
     try:
