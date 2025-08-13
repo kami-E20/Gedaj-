@@ -1,35 +1,28 @@
 import json
 from datetime import datetime
-from telebot import TeleBot
 
-# Liste des administrateurs
-ADMINS = [5618445554, 879386491]
-
-# Fichier JSON contenant tous les anniversaires
+ADMINS = [5618445554, 879386491]  # Liste des admins
 ANNIV_FILE = "data/anniversaire.json"
 
 def get_today_anniversaires():
-    """Retourne la liste des anniversaires correspondant à la date du jour."""
     try:
         with open(ANNIV_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
+    except FileNotFoundError:
         return []
 
     today = datetime.now().strftime("%m-%d")
-    return [entry for entry in data if entry.get("date") == today]
+    return [entry for entry in data if entry["date"] == today]
 
 def format_anniversaire_message(entry):
-    """Formate le message d'anniversaire."""
     return (
         f"🎉 *Anniversaire aujourd’hui !*\n"
-        f"👤 *{entry.get('nom', 'Inconnu')}* ({entry.get('profession', 'Non précisée')})\n"
+        f"👤 *{entry['nom']}* ({entry.get('profession', 'Inconnu')})\n"
         f"🌍 {entry.get('nationalité', 'Non précisée')}\n"
         f"🎬 Connu pour : _{entry.get('connu_pour', '---')}_"
     )
 
-def envoyer_anniversaires(bot: TeleBot):
-    """Envoie les anniversaires du jour aux administrateurs uniquement."""
+def envoyer_anniversaires(bot):
     anniversaires = get_today_anniversaires()
     if not anniversaires:
         return
@@ -37,13 +30,10 @@ def envoyer_anniversaires(bot: TeleBot):
     for entry in anniversaires:
         msg = format_anniversaire_message(entry)
         for admin_id in ADMINS:
-            try:
-                bot.send_message(admin_id, msg, parse_mode="Markdown")
-            except Exception as e:
-                print(f"Erreur lors de l'envoi à {admin_id}: {e}")
+            bot.send_message(admin_id, msg, parse_mode="Markdown")
 
-def register_anniversaire(bot: TeleBot):
-    """Commande manuelle /anniv réservée aux admins."""
+# Commande manuelle réservée aux admins
+def register_anniversaire(bot):
     @bot.message_handler(commands=["anniv"])
     def cmd_anniv(message):
         if message.from_user.id not in ADMINS:
