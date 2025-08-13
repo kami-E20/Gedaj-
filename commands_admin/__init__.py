@@ -49,7 +49,7 @@ def register_admin_commands(bot):
     register_prochainfilm(bot)
     print("  └─ /prochainfilm OK")
 
-    register_anniversaire(bot, AUTHORIZED_ADMINS)
+    register_anniversaire(bot)
     print("  └─ /anniversaire OK ✅")
 
     print("✅ Toutes les commandes admin ont été enregistrées.")
