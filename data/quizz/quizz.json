@@ -1,1 +1,182 @@
-
+[
+    {
+        "question": "Dans quel film retrouve-t-on le personnage de Jack Dawson ?",
+        "options": ["Titanic", "Inception", "Avatar", "Le Loup de Wall Street"],
+        "correct": 0,
+        "explication": "Jack Dawson est le héros de Titanic, incarné par Leonardo DiCaprio."
+    },
+    {
+        "question": "Quel réalisateur est à l'origine de la trilogie 'Le Seigneur des Anneaux' ?",
+        "options": ["Steven Spielberg", "Peter Jackson", "James Cameron", "Ridley Scott"],
+        "correct": 1,
+        "explication": "Peter Jackson a adapté l'œuvre de Tolkien en trois films cultes."
+    },
+    {
+        "question": "Dans 'Harry Potter', quel est le nom du hibou de Harry ?",
+        "options": ["Hedwige", "Errol", "Croûtard", "Fumseck"],
+        "correct": 0,
+        "explication": "Hedwige est le fidèle hibou blanc de Harry Potter."
+    },
+    {
+        "question": "Quel film d'animation met en scène un rat qui rêve de devenir chef cuisinier ?",
+        "options": ["Ratatouille", "Zootopie", "Vice-Versa", "Les Indestructibles"],
+        "correct": 0,
+        "explication": "Ratatouille raconte l'histoire de Rémy, un rat passionné de cuisine."
+    },
+    {
+        "question": "Dans quel film Will Smith joue-t-il un agent combattant des extraterrestres ?",
+        "options": ["Men in Black", "Independence Day", "I, Robot", "Hancock"],
+        "correct": 0,
+        "explication": "Dans Men in Black, Will Smith incarne l'agent J."
+    },
+    {
+        "question": "Quel est le nom du royaume où se déroule 'La Reine des Neiges' ?",
+        "options": ["Arendelle", "Narnia", "Avalon", "Eldorado"],
+        "correct": 0,
+        "explication": "Arendelle est le royaume imaginaire de La Reine des Neiges."
+    },
+    {
+        "question": "Qui joue le rôle du Joker dans 'The Dark Knight' de 2008 ?",
+        "options": ["Joaquin Phoenix", "Heath Ledger", "Jared Leto", "Jack Nicholson"],
+        "correct": 1,
+        "explication": "Heath Ledger a marqué le rôle du Joker dans The Dark Knight."
+    },
+    {
+        "question": "Quel film de Pixar met en scène des émotions comme personnages principaux ?",
+        "options": ["Vice-Versa", "Soul", "Là-Haut", "Coco"],
+        "correct": 0,
+        "explication": "Vice-Versa personnifie les émotions d'une petite fille."
+    },
+    {
+        "question": "Dans quel film entend-on la chanson 'Hakuna Matata' ?",
+        "options": ["Le Roi Lion", "Tarzan", "Mulan", "Aladdin"],
+        "correct": 0,
+        "explication": "'Hakuna Matata' est un hymne joyeux du Roi Lion."
+    },
+    {
+        "question": "Quel acteur incarne Iron Man dans le MCU ?",
+        "options": ["Chris Evans", "Robert Downey Jr.", "Mark Ruffalo", "Chris Hemsworth"],
+        "correct": 1,
+        "explication": "Robert Downey Jr. joue Tony Stark alias Iron Man."
+    },
+    {
+        "question": "Quel film met en scène un parc rempli de dinosaures recréés génétiquement ?",
+        "options": ["Jurassic Park", "King Kong", "Le Monde Perdu", "Dinosaure"],
+        "correct": 0,
+        "explication": "Jurassic Park raconte l'ouverture d'un parc de dinosaures."
+    },
+    {
+        "question": "Dans 'Matrix', que choisit Neo pour découvrir la vérité ?",
+        "options": ["La pilule bleue", "La pilule rouge", "Le livre de Morpheus", "Un casque VR"],
+        "correct": 1,
+        "explication": "La pilule rouge permet à Neo de voir la réalité."
+    },
+    {
+        "question": "Quel est le nom du poisson bleu dans 'Le Monde de Nemo' ?",
+        "options": ["Dory", "Marin", "Nemo", "Bubulle"],
+        "correct": 0,
+        "explication": "Dory est un poisson chirurgien bleu amnésique."
+    },
+    {
+        "question": "Qui a réalisé 'Inception' ?",
+        "options": ["Christopher Nolan", "Quentin Tarantino", "David Fincher", "James Cameron"],
+        "correct": 0,
+        "explication": "Inception est un thriller de science-fiction signé Christopher Nolan."
+    },
+    {
+        "question": "Dans quel film un robot nommé WALL-E nettoie la Terre abandonnée ?",
+        "options": ["WALL-E", "Robots", "Planète 51", "Astro Boy"],
+        "correct": 0,
+        "explication": "WALL-E est le petit robot solitaire de Pixar."
+    },
+    {
+        "question": "Quel est le prénom du personnage principal de 'Pirates des Caraïbes' ?",
+        "options": ["Jack", "Will", "Barbossa", "James"],
+        "correct": 0,
+        "explication": "Jack Sparrow est le célèbre pirate joué par Johnny Depp."
+    },
+    {
+        "question": "Dans 'Avengers: Endgame', qui manie le marteau de Thor en plus de lui ?",
+        "options": ["Hulk", "Iron Man", "Captain America", "Black Panther"],
+        "correct": 2,
+        "explication": "Captain America brandit Mjolnir lors de la bataille finale."
+    },
+    {
+        "question": "Quel film d'animation raconte l'histoire de jouets prenant vie ?",
+        "options": ["Toy Story", "Shrek", "Monstres & Cie", "Les Nouveaux Héros"],
+        "correct": 0,
+        "explication": "Toy Story est le premier long-métrage d'animation en 3D."
+    },
+    {
+        "question": "Qui est le réalisateur de 'Titanic' et 'Avatar' ?",
+        "options": ["Steven Spielberg", "James Cameron", "Peter Jackson", "George Lucas"],
+        "correct": 1,
+        "explication": "James Cameron est derrière Titanic et Avatar."
+    },
+    {
+        "question": "Dans 'Spider-Man: No Way Home', combien de Spider-Man apparaissent ensemble ?",
+        "options": ["1", "2", "3", "4"],
+        "correct": 2,
+        "explication": "Trois Spider-Man apparaissent : Tobey, Andrew et Tom."
+    },
+    {
+        "question": "Quel animal est Baloo dans 'Le Livre de la Jungle' ?",
+        "options": ["Un tigre", "Un ours", "Un singe", "Un serpent"],
+        "correct": 1,
+        "explication": "Baloo est l'ours protecteur de Mowgli."
+    },
+    {
+        "question": "Quel acteur joue Wolverine dans les films X-Men ?",
+        "options": ["Hugh Jackman", "Tom Hardy", "Ryan Reynolds", "Chris Pratt"],
+        "correct": 0,
+        "explication": "Hugh Jackman a incarné Wolverine pendant près de 20 ans."
+    },
+    {
+        "question": "Dans 'Coco', de quelle tradition mexicaine s'inspire l'histoire ?",
+        "options": ["Dia de los Muertos", "Cinco de Mayo", "Fiesta Nacional", "Carnaval"],
+        "correct": 0,
+        "explication": "Coco célèbre la tradition du Jour des Morts."
+    },
+    {
+        "question": "Qui est le père de Luke Skywalker ?",
+        "options": ["Obi-Wan Kenobi", "Anakin Skywalker", "Yoda", "Mace Windu"],
+        "correct": 1,
+        "explication": "Anakin Skywalker devient Dark Vador."
+    },
+    {
+        "question": "Dans 'Le Monde de Narnia', quel animal est Aslan ?",
+        "options": ["Un lion", "Un aigle", "Un cheval", "Un loup"],
+        "correct": 0,
+        "explication": "Aslan est un lion sage et puissant."
+    },
+    {
+        "question": "Quel est le métier de Peter Parker ?",
+        "options": ["Photographe", "Journaliste", "Scientifique", "Agent secret"],
+        "correct": 0,
+        "explication": "Peter Parker est photographe pour le Daily Bugle."
+    },
+    {
+        "question": "Dans quel film un ogre vert vit dans un marais ?",
+        "options": ["Shrek", "Monstres & Cie", "Le Géant de fer", "Les Trolls"],
+        "correct": 0,
+        "explication": "Shrek raconte l'histoire d'un ogre solitaire."
+    },
+    {
+        "question": "Qui chante 'Let It Go' dans 'La Reine des Neiges' ?",
+        "options": ["Elsa", "Anna", "Olaf", "Kristoff"],
+        "correct": 0,
+        "explication": "La chanson est interprétée par Elsa, doublée par Idina Menzel."
+    },
+    {
+        "question": "Quel est le vrai nom de Black Panther ?",
+        "options": ["T'Challa", "M'Baku", "Shuri", "Killmonger"],
+        "correct": 0,
+        "explication": "T'Challa est le roi du Wakanda, alias Black Panther."
+    },
+    {
+        "question": "Dans 'Retour vers le futur', comment s'appelle la machine à voyager dans le temps ?",
+        "options": ["TARDIS", "DeLorean", "Time Machine", "Chronos Car"],
+        "correct": 1,
+        "explication": "La DeLorean est la voiture temporelle de Doc et Marty."
+    }
+]
