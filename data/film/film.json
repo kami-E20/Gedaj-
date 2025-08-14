@@ -1,1 +1,229 @@
-
+[
+  {
+    "titre": "Inception",
+    "annee": 2010,
+    "genre": "Science-fiction, Thriller",
+    "synopsis": "Un voleur spécialisé dans l'extraction d'informations à travers les rêves est chargé d'implanter une idée dans l'esprit d'un dirigeant.",
+    "affiche_url": "https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SL1500_.jpg",
+    "plateformes": ["Netflix", "Amazon Prime Video"]
+  },
+  {
+    "titre": "Le Seigneur des anneaux : La Communauté de l'anneau",
+    "annee": 2001,
+    "genre": "Fantasy, Aventure",
+    "synopsis": "Un jeune hobbit hérite d'un anneau maléfique et entreprend un voyage périlleux pour le détruire.",
+    "affiche_url": "https://m.media-amazon.com/images/I/91b0C2YNSrL._AC_SL1500_.jpg",
+    "plateformes": ["Amazon Prime Video"]
+  },
+  {
+    "titre": "The Dark Knight",
+    "annee": 2008,
+    "genre": "Action, Thriller",
+    "synopsis": "Batman affronte le Joker, un criminel imprévisible qui menace Gotham.",
+    "affiche_url": "https://m.media-amazon.com/images/I/51k0qa6z1aL._AC_.jpg",
+    "plateformes": ["HBO Max", "Amazon Prime Video"]
+  },
+  {
+    "titre": "Titanic",
+    "annee": 1997,
+    "genre": "Romance, Drame",
+    "synopsis": "L'histoire d'amour tragique entre Jack et Rose à bord du Titanic.",
+    "affiche_url": "https://m.media-amazon.com/images/I/71V1I1r9G4L._AC_SL1188_.jpg",
+    "plateformes": ["Disney+", "Amazon Prime Video"]
+  },
+  {
+    "titre": "Avatar",
+    "annee": 2009,
+    "genre": "Science-fiction, Aventure",
+    "synopsis": "Sur la planète Pandora, un humain rejoint les Na'vi dans leur lutte contre les colons humains.",
+    "affiche_url": "https://m.media-amazon.com/images/I/81w+3VwQvJL._AC_SL1500_.jpg",
+    "plateformes": ["Disney+"]
+  },
+  {
+    "titre": "Gladiator",
+    "annee": 2000,
+    "genre": "Action, Drame",
+    "synopsis": "Un général romain trahi devient gladiateur pour se venger de l'empereur corrompu.",
+    "affiche_url": "https://m.media-amazon.com/images/I/71H0YqMZ7sL._AC_SL1188_.jpg",
+    "plateformes": ["Amazon Prime Video"]
+  },
+  {
+    "titre": "Interstellar",
+    "annee": 2014,
+    "genre": "Science-fiction, Drame",
+    "synopsis": "Un groupe d'explorateurs voyage à travers un trou de ver pour sauver l'humanité.",
+    "affiche_url": "https://m.media-amazon.com/images/I/81r+LN2n-ML._AC_SL1500_.jpg",
+    "plateformes": ["Paramount+", "Amazon Prime Video"]
+  },
+  {
+    "titre": "Forrest Gump",
+    "annee": 1994,
+    "genre": "Comédie dramatique",
+    "synopsis": "Un homme simple au grand cœur traverse plusieurs décennies d'histoire américaine.",
+    "affiche_url": "https://m.media-amazon.com/images/I/71v84vFwA3L._AC_SL1188_.jpg",
+    "plateformes": ["Netflix"]
+  },
+  {
+    "titre": "Joker",
+    "annee": 2019,
+    "genre": "Drame, Thriller",
+    "synopsis": "La lente descente dans la folie d'un comédien raté à Gotham City.",
+    "affiche_url": "https://m.media-amazon.com/images/I/81pFvNZ6M1L._AC_SL1500_.jpg",
+    "plateformes": ["HBO Max", "Amazon Prime Video"]
+  },
+  {
+    "titre": "The Matrix",
+    "annee": 1999,
+    "genre": "Science-fiction, Action",
+    "synopsis": "Un programmeur découvre que la réalité est une simulation contrôlée par des machines.",
+    "affiche_url": "https://m.media-amazon.com/images/I/71tXkQxz6mL._AC_SL1188_.jpg",
+    "plateformes": ["HBO Max"]
+  },
+  {
+        "titre": "The Lord of the Rings: The Fellowship of the Ring",
+        "annee": 2001,
+        "genre": "Fantasy, Aventure",
+        "synopsis": "Un jeune hobbit du nom de Frodon hérite d'un anneau maléfique et part en quête pour le détruire afin de sauver la Terre du Milieu.",
+        "affiche": "https://m.media-amazon.com/images/I/51Qvs9i5a%2BL._AC_.jpg"
+    },
+    {
+        "titre": "The Dark Knight",
+        "annee": 2008,
+        "genre": "Action, Crime, Drame",
+        "synopsis": "Batman doit affronter le Joker, un criminel sadique déterminé à plonger Gotham dans le chaos.",
+        "affiche": "https://m.media-amazon.com/images/I/71pVz3YVJwL._AC_SY679_.jpg"
+    },
+    {
+        "titre": "Forrest Gump",
+        "annee": 1994,
+        "genre": "Drame, Romance",
+        "synopsis": "L'histoire d'un homme au cœur pur qui, malgré son quotient intellectuel limité, influence plusieurs événements marquants de l'histoire américaine.",
+        "affiche": "https://m.media-amazon.com/images/I/81xTx-LqNvL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Inception",
+        "annee": 2010,
+        "genre": "Science-Fiction, Action",
+        "synopsis": "Un voleur capable d'infiltrer les rêves se voit confier la mission inverse : implanter une idée dans l'esprit d'une cible.",
+        "affiche": "https://m.media-amazon.com/images/I/51zUbui%2BgbL._AC_.jpg"
+    },
+    {
+        "titre": "The Matrix",
+        "annee": 1999,
+        "genre": "Science-Fiction, Action",
+        "synopsis": "Un hacker découvre que la réalité est une simulation informatique et rejoint la résistance pour libérer l'humanité.",
+        "affiche": "https://m.media-amazon.com/images/I/51EG732BV3L._AC_.jpg"
+    },
+    {
+        "titre": "Interstellar",
+        "annee": 2014,
+        "genre": "Science-Fiction, Aventure",
+        "synopsis": "Dans un futur proche, une équipe d'astronautes voyage à travers un trou de ver pour trouver une nouvelle planète habitable.",
+        "affiche": "https://m.media-amazon.com/images/I/71niXI3lxlL._AC_SL1024_.jpg"
+    },
+    {
+        "titre": "Gladiator",
+        "annee": 2000,
+        "genre": "Action, Drame",
+        "synopsis": "Un général romain trahi cherche à se venger de l'empereur corrompu qui a massacré sa famille.",
+        "affiche": "https://m.media-amazon.com/images/I/51A1X8l5%2BFL._AC_.jpg"
+    },
+    {
+        "titre": "The Lion King",
+        "annee": 1994,
+        "genre": "Animation, Drame",
+        "synopsis": "Un jeune lion, destiné à régner, doit retrouver sa place après avoir été banni de son royaume.",
+        "affiche": "https://m.media-amazon.com/images/I/81lWc7EOyPL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Avengers: Endgame",
+        "annee": 2019,
+        "genre": "Action, Science-Fiction",
+        "synopsis": "Les Avengers restants s'unissent pour inverser les actions destructrices de Thanos et sauver l'univers.",
+        "affiche": "https://m.media-amazon.com/images/I/81ExhpBEbHL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Titanic",
+        "annee": 1997,
+        "genre": "Drame, Romance",
+        "synopsis": "Une romance tragique entre Jack et Rose à bord du célèbre paquebot condamné.",
+        "affiche": "https://m.media-amazon.com/images/I/71rNJQ2g-EL._AC_SL1181_.jpg"
+    },
+    {
+        "titre": "The Godfather",
+        "annee": 1972,
+        "genre": "Crime, Drame",
+        "synopsis": "La saga de la famille Corleone, l'une des plus puissantes familles mafieuses de New York.",
+        "affiche": "https://m.media-amazon.com/images/I/51rOnIjLqzL._AC_.jpg"
+    },
+    {
+        "titre": "Jurassic Park",
+        "annee": 1993,
+        "genre": "Science-Fiction, Aventure",
+        "synopsis": "Un parc à thème avec des dinosaures clonés tourne au cauchemar lorsque les créatures s'échappent.",
+        "affiche": "https://m.media-amazon.com/images/I/81F6U%2B2UHsL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "The Avengers",
+        "annee": 2012,
+        "genre": "Action, Science-Fiction",
+        "synopsis": "Les plus grands héros de la Terre s'allient pour empêcher l'invasion extraterrestre menée par Loki.",
+        "affiche": "https://m.media-amazon.com/images/I/71xZAsMYYRL._AC_SL1024_.jpg"
+    },
+    {
+        "titre": "Frozen",
+        "annee": 2013,
+        "genre": "Animation, Famille",
+        "synopsis": "Deux sœurs royales doivent sauver leur royaume d'un hiver éternel causé par un pouvoir incontrôlable.",
+        "affiche": "https://m.media-amazon.com/images/I/81eB%2B7%2BC0bL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Black Panther",
+        "annee": 2018,
+        "genre": "Action, Aventure",
+        "synopsis": "T'Challa retourne au Wakanda pour devenir roi et défendre sa nation contre un ennemi intérieur.",
+        "affiche": "https://m.media-amazon.com/images/I/81YqvOt4QDL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Coco",
+        "annee": 2017,
+        "genre": "Animation, Famille",
+        "synopsis": "Un jeune garçon passionné de musique se retrouve au Pays des Morts pour découvrir la vérité sur sa famille.",
+        "affiche": "https://m.media-amazon.com/images/I/81s6DUyQCZL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Spider-Man: No Way Home",
+        "annee": 2021,
+        "genre": "Action, Science-Fiction",
+        "synopsis": "Spider-Man doit affronter des ennemis venus d'univers parallèles après qu'un sort magique tourne mal.",
+        "affiche": "https://m.media-amazon.com/images/I/81r%2BIEaBHNL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Shrek",
+        "annee": 2001,
+        "genre": "Animation, Comédie",
+        "synopsis": "Un ogre grincheux part en quête pour sauver une princesse, mais découvre que l'amour ne se présente pas toujours comme prévu.",
+        "affiche": "https://m.media-amazon.com/images/I/71b9gY9U%2BPL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Up",
+        "annee": 2009,
+        "genre": "Animation, Aventure",
+        "synopsis": "Un vieil homme réalise le rêve de sa vie en s'envolant vers l'Amérique du Sud avec sa maison attachée à des ballons.",
+        "affiche": "https://m.media-amazon.com/images/I/81QpkIctqPL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Toy Story",
+        "annee": 1995,
+        "genre": "Animation, Aventure",
+        "synopsis": "Les jouets d'un jeune garçon prennent vie lorsque personne ne les regarde, menant à des aventures inattendues.",
+        "affiche": "https://m.media-amazon.com/images/I/81VStYnDGrL._AC_SL1500_.jpg"
+    },
+    {
+        "titre": "Finding Nemo",
+        "annee": 2003,
+        "genre": "Animation, Aventure",
+        "synopsis": "Un poisson-clown traverse l'océan pour retrouver son fils capturé par des plongeurs.",
+        "affiche": "https://m.media-amazon.com/images/I/81Iu5qXhmZL._AC_SL1500_.jpg"
+    }
+]
