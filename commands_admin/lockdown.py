@@ -1,29 +1,48 @@
-import json
-import os
+# lockdown.py
+from telegram import Update
+from telegram.ext import CommandHandler, CallbackContext
 
-LOCKDOWN_FILE = "data/lockdown.json"
-AUTHORIZED_ADMINS = [5618445554, 879386491]
+# Variable globale pour stocker l'état du confinement
+is_lockdown = False
 
-def register_lockdown(bot):
-    @bot.message_handler(commands=['lockdown'])
-    def handle_lockdown(message):
-        if message.from_user.id not in AUTHORIZED_ADMINS:
-            bot.reply_to(message, "⛔ Cette commande est réservée aux admins.")
-            return
+# Liste des ID administrateurs autorisés à activer/désactiver
+ADMIN_IDS = [5618445554, 879386491]  # Anthony et Kâmį
 
-        # Lire l'état actuel
-        if os.path.exists(LOCKDOWN_FILE):
-            with open(LOCKDOWN_FILE, "r", encoding="utf-8") as f:
-                state = json.load(f)
-        else:
-            state = {"active": False}
+def lockdown_on(update: Update, context: CallbackContext):
+    global is_lockdown
+    user_id = update.effective_user.id
 
-        # Basculer le mode
-        state["active"] = not state["active"]
-        new_status = "activé 🔒" if state["active"] else "désactivé 🔓"
+    if user_id in ADMIN_IDS:
+        is_lockdown = True
+        update.message.reply_text("🔒 Mode confinement activé. Le bot ne répondra qu’aux administrateurs.")
+    else:
+        update.message.reply_text("⛔ Vous n’êtes pas autorisé à activer ce mode.")
 
-        # Sauvegarde
-        with open(LOCKDOWN_FILE, "w", encoding="utf-8") as f:
-            json.dump(state, f, indent=2)
+def lockdown_off(update: Update, context: CallbackContext):
+    global is_lockdown
+    user_id = update.effective_user.id
 
-        bot.send_message(message.chat.id, f"🔐 Mode confinement {new_status}.")
+    if user_id in ADMIN_IDS:
+        is_lockdown = False
+        update.message.reply_text("✅ Mode confinement désactivé. Le bot est à nouveau actif pour tous.")
+    else:
+        update.message.reply_text("⛔ Vous n’êtes pas autorisé à désactiver ce mode.")
+
+def lockdown_check(update: Update, context: CallbackContext):
+    """
+    Vérifie si le mode confinement est activé et si l'utilisateur est autorisé.
+    À intégrer dans les autres handlers du bot.
+    """
+    global is_lockdown
+    user_id = update.effective_user.id
+
+    if is_lockdown and user_id not in ADMIN_IDS:
+        update.message.reply_text("⚠️ Le bot est actuellement en mode confinement. Réessayez plus tard.")
+        return False
+    return True
+
+# Handlers à ajouter dans le main.py
+lockdown_handlers = [
+    CommandHandler("lockdown_on", lockdown_on),
+    CommandHandler("lockdown_off", lockdown_off)
+]
