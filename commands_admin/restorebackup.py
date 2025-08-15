@@ -10,7 +10,7 @@ ADMIN_IDS = [5618445554, 879386491]
 # Dossiers
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")
-BACKUP_DIR = os.path.join(PROJECT_ROOT, "backups")
+BACKUP_DIR = os.path.join(PROJECT_ROOT, "backup")
 
 # Correspondance fichiers backup → fichiers réels
 BACKUP_FILES = {
