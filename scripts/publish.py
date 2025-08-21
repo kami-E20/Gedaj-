@@ -1,6 +1,6 @@
 # scripts/publish.py
 
-from scripts.anniversaires import publier_anniversaires   # 🎂 anniversaires quotidiens
+from commands_admin.anniversaire import envoyer_anniversaires as publier_anniversaires  # 🎂 anniversaires quotidiens
 from scripts.films import publier_film                    # 🎬 film du jour
 from scripts.quiz import publier_quiz, publier_correction # ❓ quiz & correction
 from scripts.stats import (
