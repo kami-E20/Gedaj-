@@ -1,5 +1,4 @@
 from .admin_notify import send_admin_news
-from .anniversaires import fetch_anniversaires
 from .backup import backup_donnees
 from .fetch_anilist_news import fetch_anilist_news
 from .fetch_cinema_news import fetch_cinema_news
