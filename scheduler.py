@@ -11,7 +11,6 @@ from scripts.publish import (
     publier_abonnes_du_mois,
     sauvegarder_donnees,
     publier_anniversaires,
-    publier_images_acteurs,
     notifier_admins_daily,
 )
 from scripts.backup import backup_donnees
@@ -38,10 +37,6 @@ def lancer_taches_scheduled():
             # 🕕 Tous les jours à 18h00 → Anniversaires du jour + anecdote cinéma
             if heure == "18:00":
                 publier_anniversaires(bot)
-
-            # 🕖 Tous les jours à 19h00 → Images "acteurs hier vs aujourd’hui"
-            if heure == "19:00":
-                publier_images_acteurs(bot)
 
             # 🕙 Tous les jours à 22h00 → Sauvegarde + Backup
             if heure == "22:00":
