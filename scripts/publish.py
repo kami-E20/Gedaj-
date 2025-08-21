@@ -1,17 +1,15 @@
-# scripts/publisher.py
+# scripts/publish.py
 
-from scripts.notify_block import (
-    publier_actu_privee,
-    publier_anniversaires,   # ✅ anniversaires quotidiens
-    publier_film,
-    publier_quiz,
-    publier_correction,
+from scripts.anniversaires import publier_anniversaires   # 🎂 anniversaires quotidiens
+from scripts.films import publier_film                    # 🎬 film du jour
+from scripts.quiz import publier_quiz, publier_correction # ❓ quiz & correction
+from scripts.stats import (
     publier_meilleurs_abonnes,
     publier_abonnes_du_mois,
-    envoyer_statistiques,
-    sauvegarder_donnees,
-)
-from scripts.backup import backup_donnees
+    envoyer_statistiques
+)  # 🏆 classements et stats
+from scripts.news import publier_actu_privee              # 📰 actualités privées
+from scripts.backup import backup_donnees, sauvegarder_donnees  # 💾 sauvegarde et backup
 
 
 def run_all(bot=None):
