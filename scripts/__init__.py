@@ -1,4 +1,4 @@
-from commands_adm.anniversaire import envoyer_anniversaires as publier_anniversaires
+from commands_admin.anniversaire import envoyer_anniversaires as publier_anniversaires
 
 from .admin_notify import send_admin_news
 from .backup import backup_donnees
