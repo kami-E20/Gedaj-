@@ -22,7 +22,7 @@ def publier_meilleurs_abonnes(bot):
 def publier_abonnes_du_mois(bot):
     print("🎁 Récompenses du mois envoyées")
 
-from commands.admin.anniversaire import envoyer_anniversaires
+from commands_admin.anniversaire import envoyer_anniversaires
 
 def run_notifications(bot):
     """
