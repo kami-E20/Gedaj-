@@ -28,3 +28,6 @@ from .points_logic import (
 )
 
 from .publish import run_all
+
+# 🔥 Import des anniversaires (qui sont dans commands_adm)
+from commands_admin.anniversaire import envoyer_anniversaires
