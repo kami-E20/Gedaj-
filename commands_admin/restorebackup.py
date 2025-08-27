@@ -3,7 +3,7 @@ import shutil
 import telebot
 
 # Token du bot (tu l'importes depuis ta config si nécessaire)
-from config import BOT_TOKEN  
+#from config import BOT_TOKEN corrige d'abord l'erreur ___
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
