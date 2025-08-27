@@ -1,6 +1,7 @@
 import datetime
 from telebot import TeleBot
-from config import ADMINS_ID
+
+ADMINS_ID = [5618445554, 879386491]
 
 # ---- Imports internes ----
 from commands_admin.anniversaire import (
