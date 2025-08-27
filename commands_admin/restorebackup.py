@@ -1,8 +1,11 @@
-# restorebackup.py
 import os
 import shutil
-from telegram import Update
-from telegram.ext import CommandHandler, CallbackContext
+import telebot
+
+# Token du bot (tu l'importes depuis ta config si nécessaire)
+from config import BOT_TOKEN  
+
+bot = telebot.TeleBot(BOT_TOKEN)
 
 # Admins autorisés
 ADMIN_IDS = [5618445554, 879386491]
@@ -19,12 +22,14 @@ BACKUP_FILES = {
     "users_backup.json": "users.json"
 }
 
-def restore_backup(update: Update, context: CallbackContext):
-    user_id = update.effective_user.id
+# Commande admin pour restaurer les backups
+@bot.message_handler(commands=["restore_backup"])
+def restore_backup(message):
+    user_id = message.from_user.id
 
-    # Vérif admin
+    # Vérification admin
     if user_id not in ADMIN_IDS:
-        update.message.reply_text("⛔ Vous n’êtes pas autorisé à restaurer une sauvegarde.")
+        bot.reply_to(message, "⛔ Vous n’êtes pas autorisé à restaurer une sauvegarde.")
         return
 
     restored_count = 0
@@ -39,20 +44,17 @@ def restore_backup(update: Update, context: CallbackContext):
                 restored_count += 1
 
         if restored_count > 0:
-            update.message.reply_text(f"✅ {restored_count} fichiers restaurés depuis les sauvegardes.")
+            bot.reply_to(message, f"✅ {restored_count} fichiers restaurés depuis les sauvegardes.")
         else:
-            update.message.reply_text("⚠️ Aucun fichier de sauvegarde trouvé dans backups/.")
+            bot.reply_to(message, "⚠️ Aucun fichier de sauvegarde trouvé dans backups/.")
 
         # Notifier les autres admins
         for admin_id in ADMIN_IDS:
             if admin_id != user_id:
-                context.bot.send_message(
-                    chat_id=admin_id,
-                    text=f"ℹ️ {update.effective_user.first_name} a restauré {restored_count} fichiers depuis backups/"
+                bot.send_message(
+                    admin_id,
+                    f"ℹ️ {message.from_user.first_name} a restauré {restored_count} fichiers depuis backups/"
                 )
 
     except Exception as e:
-        update.message.reply_text(f"❌ Erreur lors de la restauration : {str(e)}")
-
-# Handler
-restore_backup_handler = CommandHandler("restore_backup", restore_backup)
+        bot.reply_to(message, f"❌ Erreur lors de la restauration : {str(e)}")
