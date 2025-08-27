@@ -206,3 +206,73 @@ __all__ = [
     "publier_anniversaires",
     "run_all",
 ]
+
+#___Partie notification admin____
+
+
+import telebot
+from datetime import datetime
+
+from commands_adm.anniversaire import get_today_anniversaires, format_anniversaire_message
+from scripts.fetch_cinema_news import fetch_cinema_news
+from scripts.fetch_anilist_news import fetch_anilist_news
+from scripts.notify_sorties import notify_admins_sorties
+
+# Liste des admins
+ADMINS = [5618445554, 879386491]
+
+def notifier_admins_daily(bot: telebot.TeleBot):
+    """
+    Envoie une notification quotidienne aux admins.
+    Inclut : anniversaires, actualités cinéma/animation, et rappel des sorties.
+    """
+    today = datetime.now().strftime("%d/%m/%Y")
+    header = f"📌 *Rapport quotidien Geekmania* — {today}\n\n"
+
+    # ---- Anniversaires ----
+    anniversaires = get_today_anniversaires()
+    if anniversaires:
+        anniv_text = "🎉 *Anniversaires du jour :*\n"
+        for entry in anniversaires:
+            anniv_text += f"- {entry['nom']} ({entry.get('profession', 'Inconnu')})\n"
+    else:
+        anniv_text = "🎉 Aucun anniversaire enregistré aujourd’hui.\n"
+
+    # ---- Actus Cinéma ----
+    cinema_news = fetch_cinema_news()
+    if cinema_news:
+        cinema_text = "🎬 *Actualités Cinéma :*\n" + "\n".join([f"- {n}" for n in cinema_news[:3]])
+    else:
+        cinema_text = "🎬 Pas de nouvelles ciné aujourd’hui."
+
+    # ---- Actus Animation ----
+    anime_news = fetch_anilist_news()
+    if anime_news:
+        anime_text = "🌸 *Actualités Animation :*\n" + "\n".join([f"- {n}" for n in anime_news[:3]])
+    else:
+        anime_text = "🌸 Pas de nouvelles animation aujourd’hui."
+
+    # ---- Sorties à venir ----
+    sorties_text = "📅 *Sorties à venir :*\n"
+    try:
+        sorties_text += notify_admins_sorties(bot, preview=True)
+    except Exception:
+        sorties_text += "Aucune donnée disponible."
+
+    # ---- Construction finale ----
+    message = (
+        header
+        + anniv_text + "\n\n"
+        + cinema_text + "\n\n"
+        + anime_text + "\n\n"
+        + sorties_text
+    )
+
+    # ---- Envoi aux admins ----
+    for admin_id in ADMINS:
+        try:
+            bot.send_message(admin_id, message, parse_mode="Markdown")
+        except Exception as e:
+            print(f"Erreur lors de l’envoi à {admin_id}: {e}")
+
+    print("✅ Notification quotidienne envoyée aux admins")
