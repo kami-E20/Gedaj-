@@ -22,8 +22,20 @@ from .points_logic import (
     charger_points,
 )
 
-# Depuis publish.py, seules ces fonctions existent
-from .publish import run_all, notifier_admins_daily
+# Les tâches orchestrées et run_all proviennent de scripts.publish
+from .publish import (
+    publier_actu_privee,
+    publier_anniversaires,
+    publier_film,
+    publier_quiz,
+    publier_correction,
+    publier_meilleurs_abonnes,
+    publier_abonnes_du_mois,
+    envoyer_statistiques,
+    sauvegarder_donnees,
+    notifier_admins_daily,   # 👈 ajouté ici
+    run_all,
+)
 
 __all__ = [
     "send_admin_news",
@@ -37,6 +49,15 @@ __all__ = [
     "sauvegarder_points_utilisateurs",
     "get_points",
     "charger_points",
+    "publier_actu_privee",
+    "publier_anniversaires",
+    "publier_film",
+    "publier_quiz",
+    "publier_correction",
+    "publier_meilleurs_abonnes",
+    "publier_abonnes_du_mois",
+    "envoyer_statistiques",
+    "sauvegarder_donnees",
+    "notifier_admins_daily",  # 👈 ajouté ici aussi
     "run_all",
-    "notifier_admins_daily",
 ]
