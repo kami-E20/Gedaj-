@@ -1,6 +1,7 @@
 import os
 import shutil
 import telebot
+from loader import bot, ADMINS
 
 # Token du bot (tu l'importes depuis ta config si nécessaire)
 #from config import BOT_TOKEN corrige d'abord l'erreur ___
