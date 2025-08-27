@@ -1,12 +1,11 @@
 from telebot import types
 from loader import bot, ADMINS
 from scheduler import lancer_taches_scheduled
-from publisher import run_all
 from scripts.backup import backup_donnees
 from scripts.restore import restore_backup
 from lockdown import lockdown_mode, unlock_mode
 from filmdujour import publier_film_force
-
+from scripts.publish import run_all
 
 # ✅ Vérifie si l'utilisateur est admin
 def is_admin(user_id):
