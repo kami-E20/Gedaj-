@@ -3,7 +3,7 @@ from loader import bot, ADMINS
 from scheduler import lancer_taches_scheduled
 from scripts.backup import backup_donnees
 from commands_admin.restorebackup import restore_backup
-from lockdown import lockdown_mode, unlock_mode
+from commands_admin.lockdown import lockdown_mode, unlock_mode
 from commands.filmdujour import publier_film_force
 from scripts.publish import run_all
 
