@@ -6,7 +6,7 @@ from loader import bot, ADMINS
 # Token du bot (tu l'importes depuis ta config si nécessaire)
 #from config import BOT_TOKEN corrige d'abord l'erreur ___
 
-bot = telebot.TeleBot(BOT_TOKEN)
+#bot = telebot.TeleBot(BOT_TOKEN)
 
 # Admins autorisés
 ADMIN_IDS = [5618445554, 879386491]
