@@ -11,7 +11,7 @@ is_lockdown = False
 ADMIN_IDS = [5618445554, 879386491]
 
 @bot.message_handler(commands=["lockdown_on"])
-def lockdown_on(message):
+def lockdown_mode(message):
     global is_lockdown
     if message.from_user.id in ADMIN_IDS:
         is_lockdown = True
@@ -20,7 +20,7 @@ def lockdown_on(message):
         bot.reply_to(message, "⛔ Vous n’êtes pas autorisé à activer ce mode.")
 
 @bot.message_handler(commands=["lockdown_off"])
-def lockdown_off(message):
+def unlock_mode(message):
     global is_lockdown
     if message.from_user.id in ADMIN_IDS:
         is_lockdown = False
